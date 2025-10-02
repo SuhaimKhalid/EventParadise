@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS EventParadise;
+CREATE DATABASE EventParadise;
+
+DROP DATABASE IF EXISTS EventParadise_test;
+CREATE DATABASE EventParadise_test;
