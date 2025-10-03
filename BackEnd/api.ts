@@ -1,4 +1,8 @@
-import { getAllUsers } from "./src/controllers/users-Controller";
+import {
+  getAllUsers,
+  getSingleUser,
+  patchUser,
+} from "./src/controllers/users-Controller";
 
 import express, { Application, Request, Response, NextFunction } from "express";
 
@@ -13,5 +17,9 @@ app.use(express.json()); // Parse incoming JSON requests
 
 //Get
 app.get("/api/users", getAllUsers);
+app.get("/api/users/:user_id", getSingleUser);
+
+//Patch
+app.patch("/api/users/:user_id", patchUser);
 
 export default app;

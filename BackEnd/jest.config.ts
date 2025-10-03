@@ -3,8 +3,8 @@ import type { Config } from "jest";
 const config: Config = {
   preset: "ts-jest",
   testEnvironment: "node",
-  rootDir: ".", // ensures paths start from back-end folder
-  testMatch: ["<rootDir>/tests/**/*.test.ts"], // looks inside tests folder for *.test.ts
+  rootDir: ".", // Ensures paths start from the root directory
+  testMatch: ["<rootDir>/__test/**/*.test.ts"], // Matches all .test.ts files in the __test directory
   moduleFileExtensions: ["ts", "js", "json"],
 };
 
