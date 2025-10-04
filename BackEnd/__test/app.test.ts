@@ -70,4 +70,56 @@ describe("Users Table Endpoints", () => {
       });
     });
   });
+  describe("Post /api/users", () => {
+    test("Register user as Member", async () => {
+      const registerUser = {
+        name: "Suhaim",
+        email: "suhaimkhalid007@gmail.com",
+        password: "Suhaim",
+        role: "member",
+      };
+      const result = await request(app)
+        .post("/api/auth/register")
+        .send(registerUser)
+        .expect(201);
+      const user = result.body.user;
+      expect(user).toMatchObject({
+        user_id: expect.any(Number),
+        name: expect.any(String),
+        email: expect.any(String),
+        role: expect.any(String),
+        created_at: expect.any(String),
+      });
+    });
+    test("Login User as Member", async () => {
+      const registerUser = {
+        name: "Suhaim",
+        email: "suhaimkhalid007@gmail.com",
+        password: "Suhaim",
+        role: "member",
+      };
+
+      await request(app).post("/api/auth/register").send(registerUser);
+
+      const loginUser = {
+        email: "suhaimkhalid007@gmail.com",
+        password: "Suhaim",
+      };
+      const result = await request(app)
+        .post("/api/auth/login")
+        .send(loginUser)
+        .expect(200);
+      console.log(result.body);
+      const user = result.body.user;
+      expect(user).toMatchObject({
+        user_id: expect.any(Number),
+        name: expect.any(String),
+        email: expect.any(String),
+        role: expect.any(String),
+        created_at: expect.any(String),
+      });
+      expect(result.body.token).toBeDefined();
+      expect(typeof result.body.token).toBe("string");
+    });
+  });
 });

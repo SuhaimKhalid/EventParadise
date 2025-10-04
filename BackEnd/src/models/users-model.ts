@@ -1,5 +1,6 @@
+import { registerUser } from "../controllers/users-Controller";
 import db from "../db/connection";
-
+import bcrypt from "bcrypt";
 // Define a User type (adapt this to match your DB schema)
 export interface User {
   user_id: number;
@@ -48,5 +49,31 @@ export const updateUserByID = async (
   if (result.rows.length === 0) {
     throw { status: 404, msg: "User not found" };
   }
+  return result.rows[0];
+};
+
+export const insertUser = async (
+  registerUser: Partial<User>
+): Promise<User> => {
+  const { name, email, password } = registerUser;
+
+  const assignedRole = "member";
+
+  const hashedPassword = await bcrypt.hash(password!, 10);
+
+  const result = await db.query<User>(
+    `INSERT INTO users (name, email, password, role)
+     VALUES ($1, $2, $3, $4)
+     RETURNING user_id, name, email, role, created_at`,
+    [name, email, hashedPassword, assignedRole]
+  );
+
+  return result.rows[0];
+};
+
+export const getUserByEmail = async (email: string) => {
+  const result = await db.query(`SELECT * FROM users WHERE email = $1`, [
+    email,
+  ]);
   return result.rows[0];
 };

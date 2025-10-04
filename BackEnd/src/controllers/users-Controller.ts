@@ -4,7 +4,11 @@ import {
   selectSingleUser,
   updateUserByID,
   User,
+  insertUser,
+  getUserByEmail,
 } from "../models/users-model";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const getAllUsers = async (
   req: Request,
@@ -68,6 +72,87 @@ export const patchUser = async (
       res.status(409).json({ msg: "Email already in use" });
       return;
     }
+    next(err);
+  }
+};
+
+export const registerUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const registerData: Partial<User> = req.body;
+
+    if (!registerData.name || !registerData.email || !registerData.password) {
+      res.status(400).json({ msg: "Name, email and password are required" });
+      return;
+    }
+    if (
+      registerData.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerData.email)
+    ) {
+      res.status(400).json({ msg: "Invalid email format" });
+      return;
+    }
+    const result = await insertUser(registerData);
+
+    res.status(201).json({ user: result });
+  } catch (err: any) {
+    // Handle PostgreSQL unique constraint violation
+    if (err.code === "23505") {
+      res.status(409).json({ msg: "Email already in use" });
+      return;
+    }
+    next(err);
+  }
+};
+
+export const loginUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ msg: "Email and password are required" });
+      return;
+    }
+
+    const user = await getUserByEmail(email);
+
+    if (!user) {
+      res.status(401).json({ msg: "Invalid email or password" });
+      return;
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      res.status(401).json({ msg: "Invalid email or password" });
+      return;
+    }
+
+    const token = jwt.sign(
+      { user_id: user.user_id, role: user.role },
+      process.env.JWT_SECRET || "secret",
+      { expiresIn: "1h" }
+    );
+
+    res.status(200).json({
+      msg: "Login successful",
+      token,
+      user: {
+        user_id: user.user_id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        created_at: user.created_at,
+      },
+    });
+  } catch (err) {
     next(err);
   }
 };
