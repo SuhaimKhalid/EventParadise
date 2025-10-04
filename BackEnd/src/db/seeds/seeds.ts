@@ -1,5 +1,6 @@
 import db from "../connection";
 import format from "pg-format";
+import bcrypt from "bcrypt";
 
 interface user {
   name: string;
@@ -108,7 +109,13 @@ const seed = async (dataBase: DataBase): Promise<void> => {
     // Insert Data in Tables
 
     //User Table
-    const usersValues = dataBase.users.map((data) => [
+    const hashedUsers = await Promise.all(
+      dataBase.users.map(async (data) => ({
+        ...data,
+        password: await bcrypt.hash(data.password, 10),
+      }))
+    );
+    const usersValues = hashedUsers.map((data) => [
       data.name,
       data.email,
       data.password,

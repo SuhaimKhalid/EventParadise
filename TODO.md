@@ -1,0 +1,9 @@
+- [x] Modify deleteEvent function in BackEnd/src/models/events-model.ts to delete related records (emails_log, event_members, payments) before deleting the event.
+- [x] Run the test to verify the delete endpoint returns 204 instead of 500.
+- [x] Add requireAuth middleware in BackEnd/src/middlewares/auth.ts for any logged-in user.
+- [x] Restrict POST /api/events/addEvent to staff in BackEnd/api.ts.
+- [x] Add joinEvent function in BackEnd/src/models/events-model.ts.
+- [x] Add joinEvent controller in BackEnd/src/controllers/events-Controller.ts.
+- [x] Add POST /api/events/:event_id/join route in BackEnd/api.ts.
+- [x] Update tests to include authentication for addEvent and add test for joinEvent.
+- [x] Fix join event test to join event 2 instead of 1 to avoid already joined error.

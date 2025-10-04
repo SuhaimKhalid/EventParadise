@@ -10,9 +10,12 @@ import {
   getAllEvents,
   getSingleEvent,
   patchEvent,
+  addEvent,
+  deleteEventByID,
+  joinEventByID,
 } from "./src/controllers/events-Controller";
 import express, { Application, Request, Response, NextFunction } from "express";
-import { requireStaff } from "./src/middlewares/auth";
+import { requireStaff, requireAuth } from "./src/middlewares/auth";
 import cors from "cors";
 
 const app: Application = express();
@@ -37,6 +40,11 @@ app.post("/api/auth/login", loginUser);
 app.get("/api/events", getAllEvents);
 app.get("/api/events/:event_id", getSingleEvent);
 //Patch
-app.patch("/api/events/:event_id", requireStaff, patchEvent);
+app.patch("/api/events/:event_id", patchEvent);
+//Post
+app.post("/api/events/addEvent", requireStaff, addEvent);
+app.post("/api/events/:event_id/join", requireAuth, joinEventByID);
+//Delete
+app.delete("/api/events/:event_id", deleteEventByID);
 
 export default app;

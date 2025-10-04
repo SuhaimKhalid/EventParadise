@@ -43,3 +43,72 @@ export const updateEvent = async (
   }
   return event;
 };
+
+export const insertEvent = async (
+  eventData: Partial<Event>
+): Promise<Event> => {
+  const { title, description, date, location, type, price, creator_id } =
+    eventData;
+
+  const result = await db.query<Event>(
+    `INSERT INTO events (title,description,date,location,type,price,creator_id) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+    [title, description, date, location, type, price, creator_id]
+  );
+  // Convert numeric strings to numbers
+  const event = result.rows[0];
+  if (event && typeof event.price === "string") {
+    (event as any).price = Number(event.price);
+  }
+  return event;
+};
+
+export const deleteEvent = async (event_id: number) => {
+  // Delete dependent records first to avoid foreign key constraints
+  await db.query(`DELETE FROM emails_log WHERE event_id = $1;`, [event_id]);
+  await db.query(`DELETE FROM event_members WHERE event_id = $1;`, [event_id]);
+  await db.query(`DELETE FROM payments WHERE event_id = $1;`, [event_id]);
+
+  const result = await db.query(
+    `DELETE FROM events WHERE event_id = $1 RETURNING *;`,
+    [event_id]
+  );
+
+  return result.rows[0] || null;
+};
+
+export const joinEvent = async (event_id: number, user_id: number) => {
+  // Check if event exists
+  const eventResult = await db.query(
+    `SELECT * FROM events WHERE event_id = $1;`,
+    [event_id]
+  );
+  const event = eventResult.rows[0];
+  if (!event) {
+    throw { status: 404, msg: "Event not found" };
+  }
+
+  // Check if already joined
+  const memberResult = await db.query(
+    `SELECT * FROM event_members WHERE event_id = $1 AND user_id = $2;`,
+    [event_id, user_id]
+  );
+  if (memberResult.rows.length > 0) {
+    throw { status: 400, msg: "Already joined this event" };
+  }
+
+  // Insert into event_members
+  const memberInsert = await db.query(
+    `INSERT INTO event_members (event_id, user_id) VALUES ($1, $2) RETURNING *;`,
+    [event_id, user_id]
+  );
+
+  // If paid event, create payment
+  if (event.type === "paid") {
+    await db.query(
+      `INSERT INTO payments (user_id, event_id, amount, status) VALUES ($1, $2, $3, 'pending');`,
+      [user_id, event_id, event.price]
+    );
+  }
+
+  return memberInsert.rows[0];
+};
