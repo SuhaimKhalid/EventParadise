@@ -84,22 +84,25 @@ export const registerUser = async (
   try {
     const registerData: Partial<User> = req.body;
 
-    if (!registerData.name || !registerData.email || !registerData.password) {
+    const { name, email, password, role } = registerData;
+
+    if (!name || !email || !password) {
       res.status(400).json({ msg: "Name, email and password are required" });
       return;
     }
-    if (
-      registerData.email &&
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(registerData.email)
-    ) {
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       res.status(400).json({ msg: "Invalid email format" });
       return;
     }
-    const result = await insertUser(registerData);
+
+    // Default role is "member" if not provided
+    const userRole = role || "member";
+
+    const result = await insertUser({ name, email, password, role: userRole });
 
     res.status(201).json({ user: result });
   } catch (err: any) {
-    // Handle PostgreSQL unique constraint violation
     if (err.code === "23505") {
       res.status(409).json({ msg: "Email already in use" });
       return;
