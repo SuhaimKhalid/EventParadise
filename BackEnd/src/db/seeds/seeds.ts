@@ -50,10 +50,12 @@ interface DataBase {
 type mixType = string | number | Date | null;
 const seed = async (dataBase: DataBase): Promise<void> => {
   try {
-    //Droping Tables
-    await db.query(`
-            DROP TABLE IF EXISTS
-            emails_log, event_members, payments, events, users CASCADE`);
+    // Droping Tables in reverse dependency order (CASCADE will drop sequences)
+    await db.query(`DROP TABLE IF EXISTS emails_log CASCADE`);
+    await db.query(`DROP TABLE IF EXISTS event_members CASCADE`);
+    await db.query(`DROP TABLE IF EXISTS payments CASCADE`);
+    await db.query(`DROP TABLE IF EXISTS events CASCADE`);
+    await db.query(`DROP TABLE IF EXISTS users CASCADE`);
     // Creating Users Tables
     await db.query(`
         CREATE TABLE users (
@@ -105,6 +107,14 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         status TEXT,
         sent_at TIMESTAMP DEFAULT NOW());
         `);
+    // Reset sequences
+    await db.query(`ALTER SEQUENCE users_user_id_seq RESTART WITH 1`);
+    await db.query(`ALTER SEQUENCE events_event_id_seq RESTART WITH 1`);
+    await db.query(`ALTER SEQUENCE payments_payment_id_seq RESTART WITH 1`);
+    await db.query(
+      `ALTER SEQUENCE event_members_event_member_id_seq RESTART WITH 1`
+    );
+    await db.query(`ALTER SEQUENCE emails_log_email_id_seq RESTART WITH 1`);
 
     // Insert Data in Tables
 

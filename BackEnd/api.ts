@@ -18,33 +18,47 @@ import express, { Application, Request, Response, NextFunction } from "express";
 import { requireStaff, requireAuth } from "./src/middlewares/auth";
 import cors from "cors";
 
+import {
+  getEventAttendees,
+  getUserEvents,
+} from "./src/controllers/event-Members-Controller";
+import {
+  createPayment,
+  getPaymentStatus,
+  getUserPayments,
+} from "./src/controllers/payments-Controller";
+import { sendEmail, getEmailStatus } from "./src/controllers/emails-Controller";
 const app: Application = express();
 
 app.use(cors()); // Allow CORS for frontend
 app.use(express.json()); // Parse incoming JSON requests
 
 // Users EndPoints
-//Get
 app.get("/api/users", getAllUsers);
 app.get("/api/users/:user_id", getSingleUser);
-//Patch
 app.patch("/api/users/:user_id", patchUser);
-//Post
 app.post("/api/auth/register", registerUser);
 app.post("/api/auth/login", loginUser);
 
-//////////////////////
-
 // Event EndPoints
-//Get
 app.get("/api/events", getAllEvents);
 app.get("/api/events/:event_id", getSingleEvent);
-//Patch
-app.patch("/api/events/:event_id", patchEvent);
-//Post
-app.post("/api/events/addEvent", requireStaff, addEvent);
-app.post("/api/events/:event_id/join", requireAuth, joinEventByID);
-//Delete
-app.delete("/api/events/:event_id", deleteEventByID);
+app.patch("/api/events/:event_id", requireStaff, patchEvent);
+app.post("/api/events", requireStaff, addEvent);
+app.post("/api/events/:event_id/register", requireAuth, joinEventByID);
+app.delete("/api/events/:event_id", requireStaff, deleteEventByID);
+
+// Event Members EndPoints
+app.get("/api/events/:id/attendees", requireStaff, getEventAttendees);
+app.get("/api/users/:id/events", getUserEvents);
+
+// Payments EndPoints
+app.post("/api/payments/create", requireAuth, createPayment);
+app.get("/api/payments/:id", getPaymentStatus);
+app.get("/api/users/:id/payments", getUserPayments);
+
+// Emails EndPoints
+app.post("/api/emails/send", sendEmail);
+app.get("/api/emails/:id", getEmailStatus);
 
 export default app;

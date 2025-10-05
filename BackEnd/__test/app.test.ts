@@ -5,12 +5,8 @@ import app from "../api";
 import data from "../src/db/Development-Data/development_Data";
 import seed from "../src/db/seeds/seeds";
 
-beforeEach(async () => {
+beforeAll(async () => {
   await seed(data);
-});
-
-afterAll(async () => {
-  await db.end();
 });
 
 // User Table
@@ -74,8 +70,8 @@ describe("Users Table Endpoints", () => {
   describe("Post /api/users", () => {
     test("Register user as Member", async () => {
       const registerUser = {
-        name: "Suhaim",
-        email: "suhaimkhalid007@gmail.com",
+        name: "TestMember",
+        email: "testmember@example.com",
         password: "Suhaim",
         role: "member",
       };
@@ -94,8 +90,8 @@ describe("Users Table Endpoints", () => {
     });
     test("Login User as Member", async () => {
       const registerUser = {
-        name: "Suhaim",
-        email: "suhaimkhalid007@gmail.com",
+        name: "TestLogin",
+        email: "testlogin@example.com",
         password: "Suhaim",
         role: "member",
       };
@@ -103,7 +99,7 @@ describe("Users Table Endpoints", () => {
       await request(app).post("/api/auth/register").send(registerUser);
 
       const loginUser = {
-        email: "suhaimkhalid007@gmail.com",
+        email: "testlogin@example.com",
         password: "Suhaim",
       };
       const result = await request(app)
@@ -170,6 +166,13 @@ describe("Event Table Endpoints", () => {
   });
   describe("Patch /api/events/:event_id", () => {
     test("Update Event by ID (Staff Only)", async () => {
+      // Login as staff
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ email: "bob@example.com", password: "hashed_pw2" })
+        .expect(200);
+      const token = loginResponse.body.token;
+
       const updateEvent = {
         title: "Suhaim-Tournament",
         description: "Death Match",
@@ -177,6 +180,7 @@ describe("Event Table Endpoints", () => {
 
       const result = await request(app)
         .patch("/api/events/1")
+        .set("Authorization", `Bearer ${token}`)
         .send(updateEvent)
         .expect(200);
 
@@ -215,7 +219,7 @@ describe("Event Table Endpoints", () => {
         creator_id: 2, // Bob's user_id
       };
       const result = await request(app)
-        .post("/api/events/addEvent")
+        .post("/api/events")
         .set("Authorization", `Bearer ${token}`)
         .send(addEvent)
         .expect(201);
@@ -236,15 +240,15 @@ describe("Event Table Endpoints", () => {
   });
   describe("Post /api/events/:event_id/join", () => {
     test("Join Event", async () => {
-      // Login as member
+      // Login as member (using updated user from patch test)
       const loginResponse = await request(app)
         .post("/api/auth/login")
-        .send({ email: "alice@example.com", password: "hashed_pw1" })
+        .send({ email: "suhaimkhalid007@gmail.com", password: "hashed_pw1" })
         .expect(200);
       const token = loginResponse.body.token;
 
       const result = await request(app)
-        .post("/api/events/2/join")
+        .post("/api/events/2/register")
         .set("Authorization", `Bearer ${token}`)
         .expect(201);
       const event_member = result.body.event_member;
@@ -259,9 +263,42 @@ describe("Event Table Endpoints", () => {
   });
   describe("Delete Event", () => {
     test("delete /api/event/:event_id", async () => {
-      const result = await request(app).delete("/api/events/1").expect(204);
+      // Login as staff
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ email: "bob@example.com", password: "hashed_pw2" })
+        .expect(200);
+      const token = loginResponse.body.token;
+
+      const result = await request(app)
+        .delete("/api/events/1")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(204);
       const event = result.body;
       expect(event).toEqual({});
+    });
+  });
+
+  describe("Event Members Endpoints", () => {
+    test("GET /api/events/:id/attendees - get event attendees (staff only)", async () => {
+      const loginResponse = await request(app)
+        .post("/api/auth/login")
+        .send({ email: "bob@example.com", password: "hashed_pw2" })
+        .expect(200);
+      const token = loginResponse.body.token;
+
+      const response = await request(app)
+        .get("/api/events/1/attendees")
+        .set("Authorization", `Bearer ${token}`)
+        .expect(200);
+      expect(Array.isArray(response.body.attendees)).toBe(true);
+    });
+
+    test("GET /api/users/:id/events - get user events", async () => {
+      const response = await request(app)
+        .get("/api/users/1/events")
+        .expect(200);
+      expect(Array.isArray(response.body.events)).toBe(true);
     });
   });
 });

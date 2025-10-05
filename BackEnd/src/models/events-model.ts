@@ -112,3 +112,25 @@ export const joinEvent = async (event_id: number, user_id: number) => {
 
   return memberInsert.rows[0];
 };
+
+export const selectEventAttendees = async (event_id: number) => {
+  const result = await db.query(
+    `SELECT u.user_id, u.name, u.email, u.role, em.joined_at
+     FROM event_members em
+     JOIN users u ON em.user_id = u.user_id
+     WHERE em.event_id = $1`,
+    [event_id]
+  );
+  return result.rows;
+};
+
+export const selectUserEvents = async (user_id: number) => {
+  const result = await db.query(
+    `SELECT e.event_id, e.title, e.description, e.date, e.location, e.type, e.price::INT AS price, e.created_at, em.joined_at
+     FROM event_members em
+     JOIN events e ON em.event_id = e.event_id
+     WHERE em.user_id = $1`,
+    [user_id]
+  );
+  return result.rows;
+};

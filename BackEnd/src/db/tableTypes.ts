@@ -18,22 +18,24 @@ export interface Event {
   creator_id: number;
   created_at: Date;
 }
-interface payment {
-  user_email: string;
-  event_title: string;
+export interface Payment {
+  payment_id: number;
+  user_id: number;
+  event_id: number;
   amount: number;
   status: string;
   created_at: Date;
 }
-interface event_member {
+export interface event_member {
   event_title: string;
   user_email: string;
   payment_id?: number;
   joined_at: Date;
 }
-interface email_log {
-  user_email: string;
-  event_title: string;
+export interface EmailLog {
+  email_id: number;
+  user_id: number;
+  event_id: number;
   status?: string;
   sent_at: Date;
 }

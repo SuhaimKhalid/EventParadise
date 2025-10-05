@@ -55,9 +55,9 @@ export const updateUserByID = async (
 export const insertUser = async (
   registerUser: Partial<User>
 ): Promise<User> => {
-  const { name, email, password } = registerUser;
+  const { name, email, password, role } = registerUser;
 
-  const assignedRole = "member";
+  const assignedRole = role || "member";
 
   const hashedPassword = await bcrypt.hash(password!, 10);
 

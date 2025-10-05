@@ -1,9 +1,23 @@
-- [x] Modify deleteEvent function in BackEnd/src/models/events-model.ts to delete related records (emails_log, event_members, payments) before deleting the event.
-- [x] Run the test to verify the delete endpoint returns 204 instead of 500.
-- [x] Add requireAuth middleware in BackEnd/src/middlewares/auth.ts for any logged-in user.
-- [x] Restrict POST /api/events/addEvent to staff in BackEnd/api.ts.
-- [x] Add joinEvent function in BackEnd/src/models/events-model.ts.
-- [x] Add joinEvent controller in BackEnd/src/controllers/events-Controller.ts.
-- [x] Add POST /api/events/:event_id/join route in BackEnd/api.ts.
-- [x] Update tests to include authentication for addEvent and add test for joinEvent.
-- [x] Fix join event test to join event 2 instead of 1 to avoid already joined error.
+# Fix All Errors in EventParadise BackEnd
+
+## Issues Identified
+
+- Database seeding errors: duplicate key violations, missing tables
+- Authentication failures in tests (401 Unauthorized)
+- Missing data in tests (404 Not Found)
+- Duplicate user registration (409 Conflict)
+
+## Plan
+
+1. Fix seeds.ts to properly drop and reset sequences
+2. Ensure tables are created in correct order
+3. Review test setup for database reset before each test
+4. Fix authentication in test files (login and token usage)
+5. Run tests to verify all fixes
+
+## Progress
+
+- [x] Analyze test files for setup and auth issues
+- [x] Edit seeds.ts for proper DB reset
+- [x] Edit test files for auth fixes
+- [x] Run tests and verify
