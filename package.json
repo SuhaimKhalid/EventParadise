@@ -8,5 +8,9 @@
   "scripts": {
     "build": "yarn workspace backend build",
     "start": "yarn workspace backend start"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.6.1"
   }
 }
