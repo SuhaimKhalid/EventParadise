@@ -7,7 +7,7 @@
     "setup-db": "cross-env PGPASSWORD=1122 psql -U postgres -h localhost -f ./src/db/setup-db.sql",
     "dev": "ts-node-dev --respawn --transpile-only listen.ts",
     "build": "tsc",
-    "start": "node listen.js",
+    "start": "node dist/listen.js",
     "db:dev": "cross-env NODE_ENV=development ts-node ./test.ts",
     "db:test": "cross-env NODE_ENV=test ts-node ./test.ts",
     "seed": "ts-node ./src/db/seeds/run-seeds.ts",

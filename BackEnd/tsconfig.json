@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "types": ["jest", "node"]
   },
-  "include": ["src/**/*", "__test/**/*"],
+  "include": ["src/**/*", "__test/**/*", "listen.ts", "api.ts"],
   "exclude": ["node_modules", "dist"]
 }
