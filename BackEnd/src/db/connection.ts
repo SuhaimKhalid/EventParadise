@@ -13,12 +13,21 @@ const config: PoolConfig = {
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
-  port: process.env.PGPORT ? parseInt(process.env.PGPORT) : 5432,
+  port: process.env.PGPORT ? parseInt(process.env.PGPORT, 10) : 5432,
 };
+
+if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
+  throw new Error("PGDATABASE or DATABASE_URL not set");
+}
 
 if (process.env.DATABASE_URL) {
   config.connectionString = process.env.DATABASE_URL;
-  config.ssl = { rejectUnauthorized: false };
+
+  // Apply SSL only in production
+  if (ENV === "production") {
+    config.ssl = { rejectUnauthorized: false };
+    config.max = 2;
+  }
 }
 
 const db = new Pool(config);
