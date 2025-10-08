@@ -1,0 +1,12 @@
+{
+  "name": "eventparadise",
+  "private": true,
+  "workspaces": [
+    "BackEnd",
+    "frontend"
+  ],
+  "scripts": {
+    "build": "yarn workspace backend build",
+    "start": "yarn workspace backend start"
+  }
+}
