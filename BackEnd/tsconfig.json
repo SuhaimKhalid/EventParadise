@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["src/**/*", "src/listen.ts", "src/api.ts"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "__tests__"]
 }
