@@ -5,12 +5,12 @@
   "scripts": {
     "test": "jest --runInBand --passWithNoTests",
     "setup-db": "cross-env PGPASSWORD=1122 psql -U postgres -h localhost -f ./src/db/setup-db.sql",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only listen.ts",
     "build": "tsc",
     "start": "node listen.js",
     "db:dev": "cross-env NODE_ENV=development ts-node ./test.ts",
     "db:test": "cross-env NODE_ENV=test ts-node ./test.ts",
-    "seed": "node ./db/seeds/run-seed.js",
+    "seed": "ts-node ./src/db/seeds/run-seeds.ts",
     "seed-prod": "cross-env NODE_ENV=production npm run seed"
   },
   "keywords": [],

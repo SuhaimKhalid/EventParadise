@@ -31,6 +31,7 @@ const events_Data = [
     type: "paid" as const,
     price: 50,
     creator_email: "bob@example.com", // changed from creator_id to creator_email
+    image_url: "https://example.com/images/music-festival.jpg",
     created_at: new Date("2025-10-01T12:00:00Z"),
   },
   {
@@ -41,6 +42,7 @@ const events_Data = [
     type: "free" as const,
     price: 0,
     creator_email: "bob@example.com", // changed from creator_id to creator_email
+    image_url: "https://example.com/images/charity-marathon.jpg",
     created_at: new Date("2025-10-02T09:00:00Z"),
   },
 ];

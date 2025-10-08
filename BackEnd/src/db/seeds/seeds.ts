@@ -1,6 +1,8 @@
 import db from "../connection";
 import format from "pg-format";
 import bcrypt from "bcrypt";
+import fs from "fs";
+import path from "path";
 
 interface user {
   name: string;
@@ -17,6 +19,7 @@ interface event {
   type: "free" | "paid";
   price: number;
   creator_email: string;
+  image_url?: string;
   created_at: Date;
 }
 interface payment {
@@ -77,6 +80,7 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         type TEXT CHECK (type in ('free','paid')),
         price NUMERIC DEFAULT 0,
         creator_id INT REFERENCES users(user_id),
+        image_url TEXT,
         created_at TIMESTAMP DEFAULT NOW()
         );`);
     // Creating Payments Tables
@@ -115,6 +119,11 @@ const seed = async (dataBase: DataBase): Promise<void> => {
       `ALTER SEQUENCE event_members_event_member_id_seq RESTART WITH 1`
     );
     await db.query(`ALTER SEQUENCE emails_log_email_id_seq RESTART WITH 1`);
+
+    // Enable RLS and policies
+    const rlsPath = path.join(__dirname, "../rls-policies.sql");
+    const rlsSQL = fs.readFileSync(rlsPath, "utf8");
+    await db.query(rlsSQL);
 
     // Insert Data in Tables
 
@@ -158,13 +167,14 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         data.type,
         data.price,
         creatorId,
+        data.image_url ?? null,
         data.created_at,
       ];
     });
 
     const eventInsertQuery = format(
       `
-            INSERT INTO events (title,description,date,location,type,price,creator_id,created_at) VALUES %L RETURNING *;`,
+            INSERT INTO events (title,description,date,location,type,price,creator_id,image_url,created_at) VALUES %L RETURNING *;`,
       eventValues
     );
     const { rows: InsertedEvents } = await db.query(eventInsertQuery);

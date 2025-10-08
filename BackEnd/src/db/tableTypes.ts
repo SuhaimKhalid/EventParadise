@@ -16,6 +16,7 @@ export interface Event {
   type: "free" | "paid";
   price: number;
   creator_id: number;
+  image_url?: string;
   created_at: Date;
 }
 export interface Payment {

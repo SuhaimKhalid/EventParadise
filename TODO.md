@@ -1,23 +1,14 @@
-# Fix All Errors in EventParadise BackEnd
+# TODO: Add Images to Event Table
 
-## Issues Identified
+## Tasks
 
-- Database seeding errors: duplicate key violations, missing tables
-- Authentication failures in tests (401 Unauthorized)
-- Missing data in tests (404 Not Found)
-- Duplicate user registration (409 Conflict)
-
-## Plan
-
-1. Fix seeds.ts to properly drop and reset sequences
-2. Ensure tables are created in correct order
-3. Review test setup for database reset before each test
-4. Fix authentication in test files (login and token usage)
-5. Run tests to verify all fixes
-
-## Progress
-
-- [x] Analyze test files for setup and auth issues
-- [x] Edit seeds.ts for proper DB reset
-- [x] Edit test files for auth fixes
-- [x] Run tests and verify
+- [x] Update Event interface in tableTypes.ts to include image_url field
+- [x] Modify events table creation in seeds.ts to add image_url column
+- [x] Update event interface in seeds.ts to include image_url
+- [x] Modify event insertion logic in seeds.ts to handle image_url
+- [x] Add image_url data to development_Data.ts events
+- [x] Update events-model.ts SELECT queries to include image_url
+- [x] Update events-model.ts INSERT query to include image_url
+- [x] Update selectUserEvents in events-model.ts to include image_url
+- [x] Run seed script to apply database changes
+- [ ] Test API endpoints to verify image field functionality
