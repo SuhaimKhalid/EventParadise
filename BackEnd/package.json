@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest --runInBand --passWithNoTests",
     "setup-db": "cross-env PGPASSWORD=1122 psql -U postgres -h localhost -f ./src/db/setup-db.sql",
-    "dev": "ts-node-dev --respawn --transpile-only listen.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/listen.ts",
     "build": "tsc",
     "start": "node dist/listen.js",
     "db:dev": "cross-env NODE_ENV=development ts-node ./test.ts",
