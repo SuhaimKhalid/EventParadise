@@ -6,10 +6,7 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "typeRoots": ["../node_modules/@types"],
-    "types": ["node"],
-    "ignoreDeprecations": "6.0"
+    "skipLibCheck": true
   },
   "include": ["src/**/*", "listen.ts", "api.ts"],
   "exclude": ["node_modules", "dist", "__test__"]

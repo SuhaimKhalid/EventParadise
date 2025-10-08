@@ -6,7 +6,7 @@
     "frontend"
   ],
   "scripts": {
-    "build": "yarn workspace backend build",
+    "build": "tsc --project BackEnd",
     "start": "yarn workspace backend start"
   },
   "devDependencies": {
