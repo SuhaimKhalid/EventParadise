@@ -4,7 +4,7 @@ import {
   patchUser,
   registerUser,
   loginUser,
-} from "./src/controllers/users-Controller";
+} from "./controllers/users-Controller";
 
 import {
   getAllEvents,
@@ -13,21 +13,21 @@ import {
   addEvent,
   deleteEventByID,
   joinEventByID,
-} from "./src/controllers/events-Controller";
+} from "./controllers/events-Controller";
 import express, { Application, Request, Response, NextFunction } from "express";
-import { requireStaff, requireAuth } from "./src/middlewares/auth";
+import { requireStaff, requireAuth } from "./middlewares/auth";
 import cors from "cors";
 
 import {
   getEventAttendees,
   getUserEvents,
-} from "./src/controllers/event-Members-Controller";
+} from "./controllers/event-Members-Controller";
 import {
   createPayment,
   getPaymentStatus,
   getUserPayments,
-} from "./src/controllers/payments-Controller";
-import { sendEmail, getEmailStatus } from "./src/controllers/emails-Controller";
+} from "./controllers/payments-Controller";
+import { sendEmail, getEmailStatus } from "./controllers/emails-Controller";
 const app: Application = express();
 
 app.use(cors()); // Allow CORS for frontend
