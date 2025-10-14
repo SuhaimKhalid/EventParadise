@@ -1,42 +1,220 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+:root {
+  --dark-color: #34353a;
+  --light-dark-color: #3d3e42;
+  --Primary-color: #ffc86b;
+  --titles_color: #e84242;
+  --work_area_color: #ffe569;
+  --Navbar_tab_color: #00ebff;
+}
+
+/* Header Section Start */
+header nav {
+  background-color: var(--dark-color);
+  padding: 10px 0px;
+  border-bottom: 2px solid var(--Primary-color);
+}
+.navbar-brand {
+  color: var(--Primary-color) !important;
+}
+.navbar-toggler {
+  background-color: white !important;
+}
+nav .nav-item {
+  margin: 0px 20px;
+}
+
+nav .nav-link {
+  font-size: 18px;
+  text-decoration: none;
+  transition: all 0.4s ease-in-out 0s;
+  color: white !important;
+}
+
+nav .nav-link:hover {
+  transition: all 0.4s ease-in-out 0s;
+  color: var(--Primary-color) !important;
+}
+
+nav .nav-link::after {
+  content: "";
+  display: block;
+  width: 0px;
+  height: 2px;
+  background: var(--Primary-color);
+  transition: width 0.3s ease 0s;
+}
+
+nav .nav-link:hover::after {
+  width: 100%;
+  transition: width 0.3s ease 0s;
+}
+.navImg {
+  width: 30px;
+}
+/* Header section End */
+
+/* Event Page section Start */
+.Event_page {
+}
+.Event_page .main_poster_image {
+  width: 100%;
+}
+.event_page_tite {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 20px 0px;
+}
+.events_article {
+  background-color: var(--light-dark-color);
+  margin: 10px 0px;
+  border-radius: 20px;
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+.Event_page .event_box .image_box {
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+.Event_page .image_box img {
+  width: 100%;
 }
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.Event_page .event_info_box {
+}
+.event_info_box h4 {
+  font-size: 1.7rem;
+}
+.Event_page .view_event_btn {
+  border: 2px solid var(--Primary-color);
+  background-color: transparent;
+  font-size: 1rem;
+}
+.Event_page .view_event_btn:hover {
+  border: 2px solid var(--light-dark-color);
+  color: black;
+
+  font-weight: 600;
+  background-color: var(--Primary-color);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Event Page section End */
+
+/* Event Detail Page Start */
+.Event_details {
+}
+.Event_details img {
+  width: 100%;
+}
+.Event_details h2 {
+}
+.Event_details .event_detail_box {
+  display: flex;
+  margin-top: 40px;
+  align-items: start;
+  flex-wrap: wrap;
+}
+.Event_details .event_detail_box .left_side {
+  text-align: left;
+  padding-right: 50px;
+}
+.Event_details .event_detail_box .right_side {
+  background-color: var(--dark-color);
+  border-radius: 15px;
+  padding: 20px;
+  color: white;
+}
+.Event_details .event_detail_box .right_side .title {
+  font-size: 1.7rem;
+  text-align: center;
+  margin: 10px 0px 30px;
+}
+.Event_details .event_detail_box .right_side p {
+  font-size: 1.2rem;
+}
+.Event_details .event_detail_box .right_side .location {
+  font-weight: 600;
+}
+.Event_details .event_detail_box .right_side button {
+  border: 2px solid var(--Primary-color);
+  font-size: 1rem;
+  width: 100%;
+}
+.cssbuttons-io span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  color: white;
+}
+.cssbuttons-io:hover span {
+  color: black;
+  font-weight: 700;
+}
+.cssbuttons-io {
+  position: relative;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0.8em;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--work_area_color),
+    var(--Primary-color)
+  );
+  color: black !important;
+  overflow: hidden;
+}
+
+.cssbuttons-io::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: var(--dark-color);
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 1; /* behind the text */
+}
+
+.cssbuttons-io:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.cssbuttons-io:active {
+  transform: scale(0.95);
+}
+
+/* Event Detail Page End */
+
+/* Spinner Start */
+.Spinner_section {
+  text-align: center;
+  min-height: 100vh;
+}
+.spinner_center {
+  background-color: transparent;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  margin: 20px;
+}
+.Spinner_section > h3 {
+  font-size: 30px;
+  font-weight: 600;
+  text-align: center;
+}
+/* Spinner End */
+
+@media screen and (max-width: 992px) {
+  /* Navabr Start*/
+  nav .nav-link {
+    text-align: center;
   }
-  to {
-    transform: rotate(360deg);
-  }
+  /* Navabr End*/
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
+/* ================================== */

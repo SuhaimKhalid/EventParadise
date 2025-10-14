@@ -1,11 +1,45 @@
 import "./App.css";
 import "./index.css";
+import "./Components/Stlying/slider.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Routes, Route } from "react-router-dom";
+
+import { NavbarComponent } from "./Components/Utilities/NavbarComponent";
+import { Event_Page } from "./Components/Pages/Events_Page";
+import { Home_Page } from "./Components/Pages/Home_Page";
+import { Register_Staff_Page } from "./Components/Pages/Staff User Pages/Register_Staff_Page";
+import { Login_User_Page } from "./Components/Pages/Login_User_Page";
+import { Event_Detail_Page } from "./Components/Pages/Event_Detail_Page";
+import { Add_Event_Page } from "./Components/Pages/Staff User Pages/Add_Event_Page";
+import { Staff_Account_Page } from "./Components/Pages/Staff_Account_Page";
+import { AppProvider } from "./Components/Utilities/AppProvider";
+import { Edit_Event_Page } from "./Components/Pages/Staff User Pages/Edit_Event_Page";
+import { Member_Account_Page } from "./Components/Pages/Member User Pages/Member_Account_Page";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-blue-600 text-white">
-      <h1 className="text-4xl font-bold">Tailwind is working 🎉</h1>
-    </div>
+    <AppProvider>
+      <NavbarComponent />
+      <main>
+        <Routes>
+          <Route path="/" element={<Home_Page />} />
+          <Route path="/events" element={<Event_Page />} />
+          <Route path="/staff_account" element={<Staff_Account_Page />} />
+          <Route
+            path="/event-details/:event_id"
+            element={<Event_Detail_Page />}
+          />
+          <Route path="/edit-event/:event_id" element={<Edit_Event_Page />} />
+          <Route path="/add-event" element={<Add_Event_Page />} />
+          <Route path="/register-staff" element={<Register_Staff_Page />} />
+          <Route path="/login" element={<Login_User_Page />} />
+
+          {/* Member Routes */}
+          <Route path="/member_account" element={<Member_Account_Page />} />
+        </Routes>
+      </main>
+    </AppProvider>
   );
 }
+
 export default App;

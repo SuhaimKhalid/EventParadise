@@ -1,0 +1,82 @@
+:root {
+  --dark-color: #34353a;
+  --light-dark-color: #3d3e42;
+  --Primary-color: #ffc86b;
+  --titles_color: #e84242;
+  --work_area_color: #ffe569;
+  --Navbar_tab_color: #00ebff;
+}
+
+.event_form {
+  background-color: var(--dark-color);
+  padding: 30px;
+  color: white;
+  border-radius: 20px;
+  width: 40%;
+}
+.signIN_Off {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 70px;
+  align-items: start;
+}
+
+.btn_box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+.RegisterStaff_btn span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  color: white;
+}
+.RegisterStaff_btn:hover span {
+  color: black;
+  font-weight: 700;
+}
+.RegisterStaff_btn {
+  position: relative;
+  font-weight: 500;
+  font-size: 18px;
+  border-radius: 0.8em;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--work_area_color),
+    var(--Primary-color)
+  );
+  color: black !important;
+  overflow: hidden;
+  padding: 10px !important;
+  margin: 0px 10px;
+  border: 2px solid var(--Primary-color);
+}
+
+.RegisterStaff_btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: var(--dark-color);
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 1; /* behind the text */
+}
+
+.RegisterStaff_btn:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.RegisterStaff_btn:active {
+  transform: scale(0.95);
+}
+
+@media screen and (max-width: 767px) {
+  .event_slides {
+    display: none;
+  }
+}

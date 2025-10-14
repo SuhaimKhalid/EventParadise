@@ -1,0 +1,87 @@
+:root {
+  --dark-color: #34353a;
+  --light-dark-color: #3d3e42;
+  --Primary-color: #ffc86b;
+  --titles_color: #e84242;
+  --work_area_color: #ffe569;
+  --Navbar_tab_color: #00ebff;
+}
+.userAccountBar {
+  margin-top: 60px;
+  position: relative;
+  width: 100%;
+}
+.userAccountBarBlock {
+  background-color: var(--dark-color);
+  background-image: url("https://www.themoviedb.org/assets/2/v4/account_pipes/red-b64316df5633aa0687196d10fa429418035b55122c0b5726082669b9748a0e2a.svg");
+}
+.userInner {
+  background-color: transparent;
+  background-repeat: no-repeat;
+  background-position: center -250px;
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  padding: 0;
+
+  padding: 40px 0px;
+}
+
+.userAccountBarBlock {
+  position: relative;
+  z-index: 2; /* keep content above the overlay */
+  color: white;
+}
+
+.userInnerBar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.userName_div h3 {
+  background-color: var(--Primary-color);
+  color: var(--dark-color);
+  width: 10rem;
+  height: 10rem;
+  font-size: 7rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.userInfo_div {
+  margin-left: 4rem;
+}
+.InnerUserInfo_up,
+.InnerUserInfo_down {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.InnerUserInfo_up h4 {
+  font-size: 2rem;
+}
+.InnerUserInfo_up p {
+  font-size: 1.2rem;
+  margin-top: 18px;
+  margin-left: 10px;
+}
+.InnerUserInfo_down div {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--Primary-color);
+  color: var(--dark-color);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.InnerUserInfo_down h4 {
+  font-size: 2rem;
+}
+.InnerUserInfo_down p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  margin-left: 10px;
+}
