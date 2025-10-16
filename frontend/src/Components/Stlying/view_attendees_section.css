@@ -1,0 +1,4 @@
+.view_attendees_section {
+  display: flex;
+  flex-wrap: wrap;
+}

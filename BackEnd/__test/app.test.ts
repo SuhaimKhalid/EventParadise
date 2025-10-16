@@ -1,6 +1,6 @@
 import request from "supertest";
 import db from "../src/db/connection";
-import app from "../api";
+import app from "../src/api";
 
 import data from "../src/db/Development-Data/development_Data";
 import seed from "../src/db/seeds/seeds";
@@ -137,7 +137,8 @@ describe("Event Table Endpoints", () => {
         event_id: expect.any(Number),
         title: expect.any(String),
         description: expect.any(String),
-        date: expect.any(String),
+        start_date: expect.any(String),
+        end_date: expect.any(String),
         location: expect.any(String),
         type: expect.any(String),
         price: expect.any(Number),
@@ -155,7 +156,8 @@ describe("Event Table Endpoints", () => {
         event_id: expect.any(Number),
         title: expect.any(String),
         description: expect.any(String),
-        date: expect.any(String),
+        start_date: expect.any(String),
+        end_date: expect.any(String),
         location: expect.any(String),
         type: expect.any(String),
         price: expect.any(Number),
@@ -191,7 +193,8 @@ describe("Event Table Endpoints", () => {
         event_id: expect.any(Number),
         title: "Suhaim-Tournament",
         description: "Death Match",
-        date: expect.any(String),
+        start_date: expect.any(String),
+        end_date: expect.any(String),
         location: expect.any(String),
         type: expect.any(String),
         price: expect.any(Number),
@@ -212,7 +215,8 @@ describe("Event Table Endpoints", () => {
       const addEvent = {
         title: "Game Festival",
         description: "Death Match",
-        date: new Date("2025-12-01T18:00:00Z"),
+        start_date: new Date("2025-12-01T18:00:00Z"),
+        end_date: new Date("2025-12-01T22:00:00Z"),
         location: "Central Park",
         type: "paid" as const,
         price: 50,
@@ -229,7 +233,8 @@ describe("Event Table Endpoints", () => {
         event_id: expect.any(Number),
         title: "Game Festival",
         description: "Death Match",
-        date: expect.any(String),
+        start_date: expect.any(String),
+        end_date: expect.any(String),
         location: expect.any(String),
         type: expect.any(String),
         price: expect.any(Number),
@@ -301,4 +306,8 @@ describe("Event Table Endpoints", () => {
       expect(Array.isArray(response.body.events)).toBe(true);
     });
   });
+});
+
+afterAll(async () => {
+  await db.end();
 });

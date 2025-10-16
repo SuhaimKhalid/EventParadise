@@ -26,7 +26,8 @@ const events_Data = [
   {
     title: "Music Festival",
     description: "Annual outdoor music festival.",
-    date: new Date("2025-12-01T18:00:00Z"),
+    start_date: new Date("2025-12-01T18:00:00Z"),
+    end_date: new Date("2025-12-01T18:00:00Z"),
     location: "Central Park",
     type: "paid" as const,
     price: 50,
@@ -37,7 +38,8 @@ const events_Data = [
   {
     title: "Charity Marathon",
     description: "Run for a cause.",
-    date: new Date("2025-11-15T07:00:00Z"),
+    start_date: new Date("2025-11-15T07:00:00Z"),
+    end_date: new Date("2025-11-15T07:00:00Z"),
     location: "City Stadium",
     type: "free" as const,
     price: 0,

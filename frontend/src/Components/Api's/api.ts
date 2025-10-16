@@ -86,4 +86,13 @@ export const getJoinedEventsByMember = async (user_id: number) => {
   return data;
 };
 
+// =======================
+// Payment
+// =======================
+
+// Get user payments
+export const FetchUserPayements = async (user_id: number) => {
+  const { data } = await api.get(`users/${user_id}/payments`);
+  return data;
+};
 export default api;

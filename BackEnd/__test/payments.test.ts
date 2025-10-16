@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../api";
+import app from "../src/api";
 import db from "../src/db/connection";
 import data from "../src/db/Development-Data/development_Data";
 import seed from "../src/db/seeds/seeds";
@@ -54,4 +54,8 @@ describe("Payments Endpoints", () => {
       .expect(200);
     expect(Array.isArray(response.body.payments)).toBe(true);
   });
+});
+
+afterAll(async () => {
+  await db.end();
 });

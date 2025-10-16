@@ -4,6 +4,7 @@ import { Button } from "react-bootstrap";
 import { SpinnerSection } from "./SpinnerSection";
 
 // import "../Stlying/slider.css";
+
 export const ArticleSlider = () => {
   interface Event {
     event_id: number;

@@ -1,21 +1,37 @@
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { AppContext } from "../../Utilities/AppContext";
 import { useContext, useEffect, useState } from "react";
+import React from "react";
 
-import { getJoinedEventsByMember } from "../../Api's/api";
-export const Member_UserAccountBar = () => {
-  interface Event {
-    title: string;
-    description: string;
-    start_date: string;
-    end_date: string;
-    location: string;
-    type: "free" | "paid";
-    price: number;
-    creator_id: number;
-    image_url?: string;
-    created_at: string;
-  }
+interface Payment {
+  payment_id: number;
+  user_id: number;
+  event_id: number;
+  amount: number;
+  status: string;
+  created_at: string;
+}
+interface Props {
+  setShowPayments: React.Dispatch<React.SetStateAction<boolean>>;
+  setPayments: React.Dispatch<React.SetStateAction<Payment[]>>;
+}
+interface Event {
+  title: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  location: string;
+  type: "free" | "paid";
+  price: number;
+  creator_id: number;
+  image_url?: string;
+  created_at: string;
+}
+import { FetchUserPayements, getJoinedEventsByMember } from "../../Api's/api";
+export const Member_UserAccountBar: React.FC<Props> = ({
+  setShowPayments,
+  setPayments,
+}) => {
   const { selectedUser, token } = useContext(AppContext);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
 
@@ -36,6 +52,17 @@ export const Member_UserAccountBar = () => {
     LoadEvents();
   }, [selectedUser, token]);
 
+  const fetchPayments = async (user_id: number) => {
+    try {
+      const { payments } = await FetchUserPayements(user_id);
+      console.log("payments", payments);
+      setPayments(payments);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setShowPayments(true);
+    }
+  };
   return (
     <>
       <section className="userAccountBar">
@@ -67,6 +94,20 @@ export const Member_UserAccountBar = () => {
                       <h4>{allEvents.length}</h4>
                     </div>
                     <p>Number of Events Joined</p>
+                  </div>
+                  <div>
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => {
+                        if (selectedUser?.user_id !== undefined) {
+                          fetchPayments(selectedUser.user_id);
+                        } else {
+                          alert("User not selected or user ID missing");
+                        }
+                      }}
+                    >
+                      View Payments
+                    </Button>
                   </div>
                 </div>
               </div>

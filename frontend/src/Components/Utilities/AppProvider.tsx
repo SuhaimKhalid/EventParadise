@@ -20,6 +20,8 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         if (payload.exp < now) {
           // Token expired → reset
           localStorage.removeItem("Login");
+          setUserAccess(false);
+          window.open("/login", "_self");
           setSelectedUser(null);
           setToken(null);
           setUserAccess(false);

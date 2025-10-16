@@ -31,22 +31,7 @@ export const NavbarComponent = () => {
                   <NavLink to="/events" className="nav-link">
                     Events
                   </NavLink>
-                  <NavLink to="/add-event" className="nav-link">
-                    Add Event
-                  </NavLink>
-                  <NavLink to="/delete-event" className="nav-link">
-                    Delete Event
-                  </NavLink>
-                  <NavLink to="/edit-event" className="nav-link">
-                    Edit Event
-                  </NavLink>
-                  <NavLink
-                    to="/login"
-                    className="nav-link"
-                    onClick={logOutHandler}
-                  >
-                    Log Out
-                  </NavLink>
+
                   <NavLink to="/staff_account" className="nav-link">
                     <img
                       className="navImg"
@@ -54,6 +39,13 @@ export const NavbarComponent = () => {
                       alt={`${selectedUser?.name} Current User Icon`}
                       title={selectedUser?.name}
                     />
+                  </NavLink>
+                  <NavLink
+                    to="/login"
+                    className="nav-link"
+                    onClick={logOutHandler}
+                  >
+                    Log Out
                   </NavLink>
                 </Nav>
               ) : (

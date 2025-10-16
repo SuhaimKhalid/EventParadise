@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { AppContext } from "../Utilities/AppContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -67,6 +67,24 @@ export const UserAccountBar = () => {
                       <h4>{allEvents.length}</h4>
                     </div>
                     <p>Number of Events Created</p>
+                  </div>
+                  <div>
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => {
+                        window.open("/add-event", "_self");
+                      }}
+                    >
+                      Add Event
+                    </Button>
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => {
+                        window.open("/staff_account", "_self");
+                      }}
+                    >
+                      Main
+                    </Button>
                   </div>
                 </div>
               </div>

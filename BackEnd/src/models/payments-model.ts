@@ -33,6 +33,11 @@ export const insertPayment = async (
   paymentData: Partial<Payment>
 ): Promise<Payment> => {
   const { user_id, event_id, amount, status } = paymentData;
+
+  if (!user_id || !event_id || amount === undefined) {
+    throw { status: 400, msg: "user_id, event_id, and amount are required" };
+  }
+
   const result = await db.query<Payment>(
     `INSERT INTO payments (user_id, event_id, amount, status) VALUES ($1, $2, $3, $4) RETURNING payment_id, user_id, event_id, amount, status, created_at`,
     [user_id, event_id, amount, status || "pending"]

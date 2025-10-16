@@ -14,7 +14,8 @@ interface user {
 interface event {
   title: string;
   description: string;
-  date: Date;
+  start_date: Date;
+  end_date: Date;
   location: string;
   type: "free" | "paid";
   price: number;
@@ -54,14 +55,16 @@ type mixType = string | number | Date | null;
 const seed = async (dataBase: DataBase): Promise<void> => {
   try {
     // Droping Tables in reverse dependency order (CASCADE will drop sequences)
-    await db.query(`DROP TABLE IF EXISTS emails_log CASCADE`);
-    await db.query(`DROP TABLE IF EXISTS event_members CASCADE`);
-    await db.query(`DROP TABLE IF EXISTS payments CASCADE`);
-    await db.query(`DROP TABLE IF EXISTS events CASCADE`);
-    await db.query(`DROP TABLE IF EXISTS users CASCADE`);
+    if (process.env.NODE_ENV !== "production") {
+      await db.query(`DROP TABLE IF EXISTS emails_log CASCADE`);
+      await db.query(`DROP TABLE IF EXISTS event_members CASCADE`);
+      await db.query(`DROP TABLE IF EXISTS payments CASCADE`);
+      await db.query(`DROP TABLE IF EXISTS events CASCADE`);
+      await db.query(`DROP TABLE IF EXISTS users CASCADE`);
+    }
     // Creating Users Tables
     await db.query(`
-        CREATE TABLE users (
+        CREATE TABLE IF NOT EXISTS users (
         user_id SERIAL PRIMARY KEY,
         name TEXT NOT NULL,
         email TEXT UNIQUE NOT NULL,
@@ -70,12 +73,43 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         created_at TIMESTAMP DEFAULT NOW());
         `);
     // Creating Events Tables
+    // Always check and migrate events table if needed
+    const columnResult = await db.query(`
+      SELECT column_name FROM information_schema.columns
+      WHERE table_name = 'events' AND column_name = 'start_date'
+    `);
+    if (columnResult.rows.length === 0) {
+      // Check if 'date' column exists (old schema)
+      const dateColumnResult = await db.query(`
+        SELECT column_name FROM information_schema.columns
+        WHERE table_name = 'events' AND column_name = 'date'
+      `);
+      if (dateColumnResult.rows.length > 0) {
+        // Rename 'date' to 'start_date'
+        await db.query(`ALTER TABLE events RENAME COLUMN date TO start_date`);
+        // Add end_date column
+        await db.query(`ALTER TABLE events ADD COLUMN end_date TIMESTAMP`);
+        // Set end_date to start_date for existing rows
+        await db.query(
+          `UPDATE events SET end_date = start_date WHERE end_date IS NULL`
+        );
+      } else if (process.env.NODE_ENV !== "production") {
+        // No date or start_date, drop and recreate (only in non-production)
+        await db.query(`DROP TABLE IF EXISTS events CASCADE`);
+      }
+      // In production, if no date and no start_date, assume table doesn't exist or is wrong, but don't drop
+    } else {
+      if (process.env.NODE_ENV !== "production") {
+        await db.query(`DROP TABLE IF EXISTS events CASCADE`);
+      }
+    }
     await db.query(`
-        CREATE TABLE events (
+        CREATE TABLE IF NOT EXISTS events (
         event_id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         description TEXT NOT NULL,
-        date TIMESTAMP NOT NULL,
+        start_date TIMESTAMP NOT NULL,
+        end_date TIMESTAMP NOT NULL,
         location TEXT NOT NULL,
         type TEXT CHECK (type in ('free','paid')),
         price NUMERIC DEFAULT 0,
@@ -85,7 +119,7 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         );`);
     // Creating Payments Tables
     await db.query(`
-        CREATE TABLE payments (
+        CREATE TABLE IF NOT EXISTS payments (
         payment_id SERIAL PRIMARY KEY,
         user_id  INT REFERENCES users(user_id),
         event_id INT REFERENCES events(event_id),
@@ -95,7 +129,7 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         );`);
     // Creating Event_Members Tables
     await db.query(`
-        CREATE TABLE event_members (
+        CREATE TABLE IF NOT EXISTS event_members (
         event_member_id SERIAL PRIMARY KEY,
         event_id INT REFERENCES events(event_id),
         user_id INT REFERENCES users(user_id),
@@ -103,8 +137,8 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         joined_at TIMESTAMP DEFAULT NOW()
         );`);
     // Creating Emails_log Tables
-    await db.query(`         
-        CREATE TABLE emails_log (
+    await db.query(`
+        CREATE TABLE IF NOT EXISTS emails_log (
         email_id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(user_id),
         event_id INT REFERENCES events(event_id),
@@ -112,20 +146,31 @@ const seed = async (dataBase: DataBase): Promise<void> => {
         sent_at TIMESTAMP DEFAULT NOW());
         `);
     // Reset sequences
-    await db.query(`ALTER SEQUENCE users_user_id_seq RESTART WITH 1`);
-    await db.query(`ALTER SEQUENCE events_event_id_seq RESTART WITH 1`);
-    await db.query(`ALTER SEQUENCE payments_payment_id_seq RESTART WITH 1`);
-    await db.query(
-      `ALTER SEQUENCE event_members_event_member_id_seq RESTART WITH 1`
-    );
-    await db.query(`ALTER SEQUENCE emails_log_email_id_seq RESTART WITH 1`);
+    if (process.env.NODE_ENV !== "production") {
+      await db.query(`ALTER SEQUENCE users_user_id_seq RESTART WITH 1`);
+      await db.query(`ALTER SEQUENCE events_event_id_seq RESTART WITH 1`);
+      await db.query(`ALTER SEQUENCE payments_payment_id_seq RESTART WITH 1`);
+      await db.query(
+        `ALTER SEQUENCE event_members_event_member_id_seq RESTART WITH 1`
+      );
+      await db.query(`ALTER SEQUENCE emails_log_email_id_seq RESTART WITH 1`);
+    }
 
     // Enable RLS and policies
-    const rlsPath = path.join(__dirname, "../rls-policies.sql");
-    const rlsSQL = fs.readFileSync(rlsPath, "utf8");
-    await db.query(rlsSQL);
+    if (process.env.NODE_ENV !== "production") {
+      const rlsPath = path.join(__dirname, "../rls-policies.sql");
+      const rlsSQL = fs.readFileSync(rlsPath, "utf8");
+      await db.query(rlsSQL);
+    }
 
     // Insert Data in Tables
+    // Check if data already exists (for production)
+    const userCountResult = await db.query(`SELECT COUNT(*) FROM users`);
+    const userCount = parseInt(userCountResult.rows[0].count);
+    if (userCount > 0) {
+      console.log("Data already exists, skipping seed inserts.");
+      return;
+    }
 
     //User Table
     const hashedUsers = await Promise.all(
@@ -162,7 +207,8 @@ const seed = async (dataBase: DataBase): Promise<void> => {
       return [
         data.title,
         data.description,
-        data.date,
+        data.start_date,
+        data.end_date,
         data.location,
         data.type,
         data.price,
@@ -174,7 +220,7 @@ const seed = async (dataBase: DataBase): Promise<void> => {
 
     const eventInsertQuery = format(
       `
-            INSERT INTO events (title,description,date,location,type,price,creator_id,image_url,created_at) VALUES %L RETURNING *;`,
+            INSERT INTO events (title,description,start_date,end_date,location,type,price,creator_id,image_url,created_at) VALUES %L RETURNING *;`,
       eventValues
     );
     const { rows: InsertedEvents } = await db.query(eventInsertQuery);

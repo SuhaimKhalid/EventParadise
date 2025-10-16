@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../api";
+import app from "../src/api";
 
 describe("User Tests", () => {
   test("should pass", () => {

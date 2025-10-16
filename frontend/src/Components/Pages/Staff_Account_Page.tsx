@@ -73,6 +73,9 @@ export const Staff_Account_Page = () => {
     window.open(`/edit-event/${event_id}`, "_self");
   };
 
+  const ViewAttendeesHandler = async (event_id: number) => {
+    window.open(`/view_attendees/${event_id}`, "_self");
+  };
   return (
     <>
       <UserAccountBar />
@@ -118,13 +121,19 @@ export const Staff_Account_Page = () => {
                       className="cssbuttons-io"
                       onClick={() => detailEventHandler(item.event_id)}
                     >
-                      <span>Detail</span>
+                      <span>View</span>
                     </Button>
                     <Button
                       className="cssbuttons-io"
                       onClick={() => deleteEventHandle(item.event_id)}
                     >
                       <span>Delete</span>
+                    </Button>
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => ViewAttendeesHandler(item.event_id)}
+                    >
+                      <span>Detail</span>
                     </Button>
                   </Card.Body>
                 </Card>

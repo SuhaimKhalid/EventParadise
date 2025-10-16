@@ -1,5 +1,5 @@
 import request from "supertest";
-import app from "../api";
+import app from "../src/api";
 import db from "../src/db/connection";
 import data from "../src/db/Development-Data/development_Data";
 import seed from "../src/db/seeds/seeds";
@@ -38,4 +38,8 @@ describe("Emails Endpoints", () => {
       sent_at: expect.any(String),
     });
   });
+});
+
+afterAll(async () => {
+  await db.end();
 });

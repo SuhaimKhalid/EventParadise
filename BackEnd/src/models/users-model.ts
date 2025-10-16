@@ -57,6 +57,10 @@ export const insertUser = async (
 ): Promise<User> => {
   const { name, email, password, role } = registerUser;
 
+  if (!name || !email || !password) {
+    throw { status: 400, msg: "Name, email, and password are required" };
+  }
+
   const assignedRole = role || "member";
 
   const hashedPassword = await bcrypt.hash(password!, 10);

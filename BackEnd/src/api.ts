@@ -13,6 +13,7 @@ import {
   addEvent,
   deleteEventByID,
   joinEventByID,
+  getEventsCreatedByUser,
 } from "./controllers/events-Controller";
 import express, { Application, Request, Response, NextFunction } from "express";
 import { requireStaff, requireAuth } from "./middlewares/auth";
@@ -33,9 +34,21 @@ const app: Application = express();
 app.use(cors()); // Allow CORS for frontend
 app.use(express.json()); // Parse incoming JSON requests
 
+// Global error handler
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  const status = err.status || 500;
+  const msg = err.msg || "Internal Server Error";
+  res.status(status).json({ msg });
+});
+
 // Users EndPoints
 app.get("/api/users", getAllUsers);
 app.get("/api/users/:user_id", getSingleUser);
+app.get(
+  "/api/users/:user_id/created-events",
+  requireStaff,
+  getEventsCreatedByUser
+);
 app.patch("/api/users/:user_id", patchUser);
 app.post("/api/auth/register", registerUser);
 app.post("/api/auth/login", loginUser);
@@ -60,5 +73,16 @@ app.get("/api/users/:id/payments", getUserPayments);
 // Emails EndPoints
 app.post("/api/emails/send", sendEmail);
 app.get("/api/emails/:id", getEmailStatus);
+
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+  if (err.status && err.msg) {
+    res.status(err.status).json({ msg: err.msg });
+  } else if (err.status && err.message) {
+    res.status(err.status).json({ msg: err.message });
+  } else {
+    console.error(err);
+    res.status(500).json({ msg: "Internal Server Error" });
+  }
+});
 
 export default app;

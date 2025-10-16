@@ -11,7 +11,8 @@ export interface Event {
   event_id: number;
   title: string;
   description: string;
-  date: Date;
+  start_date: Date;
+  end_date: Date;
   location: string;
   type: "free" | "paid";
   price: number;

@@ -6,6 +6,7 @@ import {
   insertEvent,
   deleteEvent,
   joinEvent,
+  selectEventsByCreator,
 } from "../models/events-model";
 import { Event } from "../db/tableTypes";
 
@@ -37,6 +38,11 @@ export const getSingleEvent = async (
 
     const result = await selectSingleEvent(event_id);
 
+    if (!result) {
+      res.status(404).json({ msg: "Event not found" });
+      return;
+    }
+
     res.status(200).json({ event: result });
   } catch (err) {
     next(err);
@@ -56,7 +62,14 @@ export const patchEvent = async (
       res.status(400).json({ msg: "Invalid Event ID" });
       return;
     }
+
     const result = await updateEvent(event_id, UpdateEventData);
+
+    if (!result) {
+      res.status(404).json({ msg: "Event not found" });
+      return;
+    }
+
     res.status(200).json({ event: result });
   } catch (err) {
     next(err);
@@ -117,7 +130,33 @@ export const joinEventByID = async (
     const user_id = user.user_id;
 
     const result = await joinEvent(event_id, user_id);
+
+    if (!result) {
+      res.status(404).json({ msg: "Event not found" });
+      return;
+    }
+
     res.status(201).json({ event_member: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getEventsCreatedByUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const user_id = Number(req.params.user_id);
+
+    if (isNaN(user_id) || user_id <= 0) {
+      res.status(400).json({ msg: "Invalid User ID" });
+      return;
+    }
+
+    const result = await selectEventsByCreator(user_id);
+    res.status(200).json({ events: result });
   } catch (err) {
     next(err);
   }
