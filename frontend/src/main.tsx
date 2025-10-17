@@ -7,8 +7,8 @@ import "../src/Components/Stlying/UserAccountBar.css";
 import "../src/Components/Stlying/Staff_acount.css";
 import "../src/Components/Stlying/view_attendees_section.css";
 
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <App />

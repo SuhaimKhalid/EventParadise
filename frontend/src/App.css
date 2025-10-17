@@ -193,7 +193,7 @@ nav .nav-link:hover::after {
 /* Spinner Start */
 .Spinner_section {
   text-align: center;
-  min-height: 100vh;
+  min-height: 100px;
 }
 .spinner_center {
   background-color: transparent;

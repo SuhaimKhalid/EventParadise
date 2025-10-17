@@ -7,7 +7,7 @@ import { Routes, Route } from "react-router-dom";
 
 import { NavbarComponent } from "./Components/Utilities/NavbarComponent";
 import { Event_Page } from "./Components/Pages/Events_Page";
-import { Home_Page } from "./Components/Pages/Home_Page";
+import { Home_Page } from "./Components/Pages/Main Pages/Home_Page";
 import { Register_Staff_Page } from "./Components/Pages/Staff User Pages/Register_Staff_Page";
 import { Login_User_Page } from "./Components/Pages/Login_User_Page";
 import { Event_Detail_Page } from "./Components/Pages/Event_Detail_Page";
@@ -31,7 +31,7 @@ function App() {
             path="/event-details/:event_id"
             element={<Event_Detail_Page />}
           />
-          <Route path="/register-staff" element={<Register_Staff_Page />} />
+          <Route path="/register" element={<Register_Staff_Page />} />
           <Route path="/login" element={<Login_User_Page />} />
 
           {/* Staff */}

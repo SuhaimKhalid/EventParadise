@@ -1,0 +1,75 @@
+@import "../Stlying/colors.css";
+
+.footer {
+  background-color: var(--dark-color);
+  color: #fff;
+  padding: 40px 20px 20px;
+  font-family: Arial, sans-serif;
+  border-top: 4px solid var(--Primary-color);
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.footer h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  color: var(--Primary-color);
+}
+
+.footer p,
+.footer a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.footer a:hover {
+  color: var(--Primary-color);
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-socials .social-icons a {
+  display: inline-block;
+  margin-right: 15px;
+  background-color: var(--light-dark-color);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.footer-socials .social-icons a:hover {
+  background-color: var(--Primary-color);
+  color: #1c1c1c;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 13px;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

@@ -29,6 +29,14 @@ export const fetchSingleEvent = async (event_id: number) => {
   return data;
 };
 
+// search Event By Name
+export const FetchEventByTitle = async (title: string) => {
+  const { data } = await api.get(`api/events/search`, {
+    params: { title },
+  });
+  return data;
+};
+
 export const addEvent = async (
   eventData: Event,
   token: string
