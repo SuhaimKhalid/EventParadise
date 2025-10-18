@@ -7,6 +7,14 @@
   --Navbar_tab_color: #00ebff;
 }
 
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+main {
+  flex: 1;
+}
 /* Header Section Start */
 header nav {
   background-color: var(--dark-color);

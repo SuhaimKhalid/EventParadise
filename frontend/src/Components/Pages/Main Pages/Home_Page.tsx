@@ -9,7 +9,7 @@ import { Button, Col, Container } from "react-bootstrap";
 import { Home_Event_Image_Sider } from "../../Utilities/Home_Event_Image_Sider";
 import Form from "react-bootstrap/Form";
 import { fetchAllEvents } from "../../Api's/api";
-import { Footer } from "../../Utilities/footer";
+
 interface Event {
   event_id: number;
   title: string;
@@ -276,7 +276,6 @@ export const Home_Page = () => {
               </Col>
             </section>
           </Container>
-          <Footer />
         </section>
       )}
     </>

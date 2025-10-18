@@ -11,9 +11,10 @@
 .event_slider_card {
   background-color: transparent;
   width: 300px;
-  height: 200px;
-  border: 1px solid #f1f1f1;
+  height: 500px;
+
   perspective: 1000px; /* Remove this if you don't want the 3D effect */
+  border-radius: 15px;
 }
 
 /* This container is needed to position the front and back side */
@@ -42,22 +43,45 @@
 }
 
 /* Style the front side (fallback if image is missing) */
+.event_card_front.carousel-item {
+  height: 500px;
+}
 .event_card_front {
   background-color: #bbb;
   color: black;
+  min-height: 500px;
 }
 .event_card_front img {
+  height: 100%;
+  width: 100%;
+  object-fit: scale-down;
+  background-color: white;
 }
 /* Style the back side */
 .event_card_back {
-  background-color: var(--Primary-color);
+  background: #ffc800;
+  background: linear-gradient(
+    151deg,
+    rgba(255, 200, 0, 1) 6%,
+    rgba(255, 119, 0, 0.79) 31%,
+    rgba(251, 153, 28, 0.87) 66%,
+    rgba(247, 187, 57, 1) 76%
+  );
   transform: rotateY(180deg);
-  width: 70%;
+  width: 100%;
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.cssbuttons-io {
+  outline: none !important;
+  border-color: transparent !important;
 }
 /* Event Slider End */
 .carousel.vertical .carousel-inner {
-  height: 300px;
+  height: 100%;
 }
 
 .carousel.vertical .carousel-item-next.carousel-item-start,
