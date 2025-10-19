@@ -146,7 +146,6 @@ EventParadise/
 │   └── tsconfig.json            # TypeScript config
 ├── .gitignore                   # Git ignore rules
 ├── LICENSE                      # Project license
-├── TODO.md                      # Current tasks and fixes
 └── README.md                    # This file
 ```
 
