@@ -1,0 +1,13 @@
+@import "../Stlying/colors.css";
+.Staff_tab_section {
+  margin-top: 30px;
+}
+.Staff_tab_section .nav-link {
+  color: black;
+}
+.Staff_tab_section .nav-link.active {
+  background-color: var(--Primary-color) !important;
+}
+/* .Staff_tab_section .nav-tabs {
+  justify-content: end;
+} */

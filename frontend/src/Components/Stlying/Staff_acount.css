@@ -1,4 +1,23 @@
 .staff_created_event {
   display: flex;
   flex-wrap: wrap;
+  margin: 20px 0px;
+}
+.staff_page_spinner {
+  margin: 20px auto;
+}
+.staff_page_card {
+  margin: 20px 0px;
+}
+.staff_Event_btn_div {
+  margin: 10px 0px;
+}
+.staff_Event_btn_div button {
+  width: 45%;
+  margin: 5px;
+}
+@media screen and (max-width: 767px) {
+  .staff_page_card {
+    width: 100% !important;
+  }
 }

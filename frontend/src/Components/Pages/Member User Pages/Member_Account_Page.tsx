@@ -7,6 +7,8 @@ import { getJoinedEventsByMember } from "../../Api's/api";
 import { SpinnerSection } from "../../Utilities/SpinnerSection";
 import axios from "axios";
 import { getGoogleCalendarLink } from "../../Utilities/GoogleCalender";
+
+import "../../Stlying/member_account_page.css";
 // import { useGoogleCalendar } from "../../Utilities/GoogleCalender";
 
 interface Payment {
@@ -102,13 +104,20 @@ export const Member_Account_Page = () => {
 
       <Container>
         {showPayments ? (
-          <Table>
+          <Table
+            style={{ marginTop: "20px" }}
+            striped
+            bordered
+            hover
+            responsive
+          >
             <thead>
               <tr>
                 <th>Movie Name</th>
                 <th>Price</th>
                 <th>Status</th>
                 <th>Payment Date</th>
+                <th>Type</th>
               </tr>
             </thead>
             <tbody>
@@ -129,7 +138,10 @@ export const Member_Account_Page = () => {
                       <span>Paid</span>
                     ) : (
                       token && (
-                        <Button onClick={() => handlePayment(item)}>
+                        <Button
+                          className="TablepayBtn"
+                          onClick={() => handlePayment(item)}
+                        >
                           <span>Pay</span>
                         </Button>
                       )
@@ -140,15 +152,15 @@ export const Member_Account_Page = () => {
             </tbody>
           </Table>
         ) : (
-          <section className="staff_created_event">
+          <section className="staff_created_event member_page">
             {loading ? (
               <SpinnerSection />
             ) : allEvents.length === 0 ? (
-              <p>No events created yet.</p>
+              <p>No events joined yet.</p>
             ) : (
               allEvents.map((item, index) => (
                 <Col lg={4} md={6} sm={12} key={index}>
-                  <Card style={{ width: "18rem" }}>
+                  <Card className="member_col_div" style={{ width: "18rem" }}>
                     <Card.Img variant="top" src={item.image_url} />
                     <Card.Body>
                       <Card.Title>{item.title}</Card.Title>
@@ -171,38 +183,27 @@ export const Member_Account_Page = () => {
                         })}
                       </Card.Text>
 
-                      <Button
-                        className="cssbuttons-io"
-                        onClick={() => detailEventHandler(item.event_id)}
-                      >
-                        <span>Detail</span>
-                      </Button>
+                      <div className="btn_div">
+                        <Button
+                          className="cssbuttons-io"
+                          onClick={() => detailEventHandler(item.event_id)}
+                        >
+                          <span>View Detail</span>
+                        </Button>
 
-                      {/* <Button
-                        className="cssbuttons-io"
-                        disabled={!gapiReady}
-                        onClick={() =>
-                          addEventToCalendar({
-                            title: item.title,
-                            description: item.description,
-                            start_date: item.start_date,
-                            end_date: item.end_date,
-                            location: item.location,
-                            type: item.type,
-                            price: item.price,
-                            image_url: item.image_url,
-                          })
-                        }
-                      >
-                        <span>Add To Calendar</span>
-                      </Button> */}
-                      <a
-                        href={getGoogleCalendarLink(item)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Add to Google Calendar
-                      </a>
+                        <Button className="cssbuttons-io">
+                          <span>
+                            <a
+                              className="addCalender"
+                              href={getGoogleCalendarLink(item)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              Add to Calendar
+                            </a>
+                          </span>
+                        </Button>
+                      </div>
                     </Card.Body>
                   </Card>
                 </Col>

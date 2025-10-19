@@ -1,5 +1,5 @@
 import type React from "react";
-import { UserAccountBar } from "../../Utilities/UserAccountBar";
+import { UserAccountBar } from "./UserAccountBar";
 import { useEffect, useState, useContext } from "react";
 import { fetchSingleEvent } from "../../Api's/api";
 import { useParams, useNavigate } from "react-router-dom";
@@ -62,7 +62,6 @@ export const Edit_Event_Page = () => {
       try {
         const { event } = await fetchSingleEvent(Number(event_id));
 
-        // Convert ISO to local datetime format for input fields
         const formatDate = (isoString: string) =>
           isoString ? new Date(isoString).toISOString().slice(0, 16) : "";
 
@@ -112,7 +111,13 @@ export const Edit_Event_Page = () => {
     >
   ) => {
     const { name, value } = e.target;
-    setForm({ ...form, [name]: value });
+
+    // ✅ Ensure price updates as number, not string
+    if (name === "price") {
+      setForm({ ...form, price: Number(value) });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   };
 
   // ----------------- Submit / Update Event -----------------
@@ -132,7 +137,7 @@ export const Edit_Event_Page = () => {
           end_date: new Date(form.end_date).toISOString(),
           location: form.location,
           type: form.type,
-          price: form.type === "paid" ? Number(form.price) : 0,
+          price: form.type === "paid" ? Number(form.price) : 0, // ✅ consistent numeric handling
           image_url: form.image_url,
         },
         {
@@ -141,7 +146,7 @@ export const Edit_Event_Page = () => {
       );
 
       alert("Event updated successfully!");
-      navigate("/staff-account");
+      navigate("/staff_account");
     } catch (error) {
       console.error("Error updating event:", error);
       alert("Failed to update event. Please try again.");
@@ -156,173 +161,174 @@ export const Edit_Event_Page = () => {
           <div className="container mt-5">
             <h2 className="mb-4 text-center">Edit Event</h2>
 
-            <form onSubmit={EditEventHandler}>
-              {/* Title */}
-              <div className="mb-3">
-                <label htmlFor="title" className="form-label">
-                  Event Title
-                </label>
-                <input
-                  name="title"
-                  value={form.title}
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  id="title"
-                  placeholder="Enter event title"
-                />
-                {errors.title && (
-                  <small className="text-danger">{errors.title}</small>
-                )}
-              </div>
-
-              {/* Description */}
-              <div className="mb-3">
-                <label htmlFor="description" className="form-label">
-                  Description
-                </label>
-                <textarea
-                  name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  className="form-control"
-                  id="description"
-                  rows={3}
-                  placeholder="Enter event details"
-                />
-                {errors.description && (
-                  <small className="text-danger">{errors.description}</small>
-                )}
-              </div>
-
-              {/* Start Date */}
-              <div className="mb-3">
-                <label htmlFor="start_date" className="form-label">
-                  Start Date
-                </label>
-                <input
-                  name="start_date"
-                  value={form.start_date}
-                  onChange={handleChange}
-                  type="datetime-local"
-                  className="form-control"
-                  id="start_date"
-                />
-                {errors.start_date && (
-                  <small className="text-danger">{errors.start_date}</small>
-                )}
-              </div>
-
-              {/* End Date */}
-              <div className="mb-3">
-                <label htmlFor="end_date" className="form-label">
-                  End Date
-                </label>
-                <input
-                  name="end_date"
-                  value={form.end_date}
-                  onChange={handleChange}
-                  type="datetime-local"
-                  className="form-control"
-                  id="end_date"
-                />
-                {errors.end_date && (
-                  <small className="text-danger">{errors.end_date}</small>
-                )}
-              </div>
-
-              {/* Location */}
-              <div className="mb-3">
-                <label htmlFor="location" className="form-label">
-                  Location
-                </label>
-                <input
-                  name="location"
-                  value={form.location}
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  id="location"
-                  placeholder="Event location"
-                />
-                {errors.location && (
-                  <small className="text-danger">{errors.location}</small>
-                )}
-              </div>
-
-              {/* Type */}
-              <div className="mb-3">
-                <label htmlFor="type" className="form-label">
-                  Type
-                </label>
-                <select
-                  name="type"
-                  value={form.type}
-                  onChange={handleChange}
-                  className="form-select"
-                  id="type"
-                >
-                  <option value="free">Free</option>
-                  <option value="paid">Paid</option>
-                </select>
-                {errors.type && (
-                  <small className="text-danger">{errors.type}</small>
-                )}
-              </div>
-
-              {/* Price (paid events only) */}
-              {form.type === "paid" && (
+            <section className="Edit_page">
+              <form onSubmit={EditEventHandler}>
+                {/* Title */}
                 <div className="mb-3">
-                  <label htmlFor="price" className="form-label">
-                    Price (£)
+                  <label htmlFor="title" className="form-label">
+                    Event Title
                   </label>
                   <input
-                    name="price"
-                    value={form.price}
+                    name="title"
+                    value={form.title}
                     onChange={handleChange}
-                    type="number"
+                    type="text"
                     className="form-control"
-                    id="price"
-                    placeholder="Enter ticket price"
+                    id="title"
+                    placeholder="Enter event title"
                   />
-                  {errors.price && (
-                    <small className="text-danger">{errors.price}</small>
+                  {errors.title && (
+                    <small className="text-danger">{errors.title}</small>
                   )}
                 </div>
-              )}
 
-              {/* Image URL */}
-              <div className="mb-3">
-                <label htmlFor="image_url" className="form-label">
-                  Poster / Image URL
-                </label>
-                <input
-                  name="image_url"
-                  value={form.image_url}
-                  onChange={handleChange}
-                  type="text"
-                  className="form-control"
-                  id="image_url"
-                  placeholder="Paste image URL"
-                />
-                {errors.image_url && (
-                  <small className="text-danger">{errors.image_url}</small>
+                {/* Description */}
+                <div className="mb-3">
+                  <label htmlFor="description" className="form-label">
+                    Description
+                  </label>
+                  <textarea
+                    name="description"
+                    value={form.description}
+                    onChange={handleChange}
+                    className="form-control"
+                    id="description"
+                    rows={3}
+                    placeholder="Enter event details"
+                  />
+                  {errors.description && (
+                    <small className="text-danger">{errors.description}</small>
+                  )}
+                </div>
+
+                {/* Start Date */}
+                <div className="mb-3">
+                  <label htmlFor="start_date" className="form-label">
+                    Start Date
+                  </label>
+                  <input
+                    name="start_date"
+                    value={form.start_date}
+                    onChange={handleChange}
+                    type="datetime-local"
+                    className="form-control"
+                    id="start_date"
+                  />
+                  {errors.start_date && (
+                    <small className="text-danger">{errors.start_date}</small>
+                  )}
+                </div>
+
+                {/* End Date */}
+                <div className="mb-3">
+                  <label htmlFor="end_date" className="form-label">
+                    End Date
+                  </label>
+                  <input
+                    name="end_date"
+                    value={form.end_date}
+                    onChange={handleChange}
+                    type="datetime-local"
+                    className="form-control"
+                    id="end_date"
+                  />
+                  {errors.end_date && (
+                    <small className="text-danger">{errors.end_date}</small>
+                  )}
+                </div>
+
+                {/* Location */}
+                <div className="mb-3">
+                  <label htmlFor="location" className="form-label">
+                    Location
+                  </label>
+                  <input
+                    name="location"
+                    value={form.location}
+                    onChange={handleChange}
+                    type="text"
+                    className="form-control"
+                    id="location"
+                    placeholder="Event location"
+                  />
+                  {errors.location && (
+                    <small className="text-danger">{errors.location}</small>
+                  )}
+                </div>
+
+                {/* Type */}
+                <div className="mb-3">
+                  <label htmlFor="type" className="form-label">
+                    Type
+                  </label>
+                  <select
+                    name="type"
+                    value={form.type}
+                    onChange={handleChange}
+                    className="form-select"
+                    id="type"
+                  >
+                    <option value="free">Free</option>
+                    <option value="paid">Paid</option>
+                  </select>
+                  {errors.type && (
+                    <small className="text-danger">{errors.type}</small>
+                  )}
+                </div>
+
+                {/* ✅ Price (only for paid events) */}
+                {form.type === "paid" && (
+                  <div className="mb-3">
+                    <label htmlFor="price" className="form-label">
+                      Price (£)
+                    </label>
+                    <input
+                      name="price"
+                      value={form.price}
+                      onChange={handleChange}
+                      type="number"
+                      className="form-control"
+                      id="price"
+                      min={1}
+                      step={1}
+                      placeholder="Enter ticket price"
+                    />
+                    {errors.price && (
+                      <small className="text-danger">{errors.price}</small>
+                    )}
+                  </div>
                 )}
-              </div>
 
-              {/* Submit */}
-              <div className="text-center">
-                <button type="reset" className="btn btn-secondary px-4 py-2">
-                  Clear
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary px-4 py-2 ms-3"
-                >
-                  Save Changes
-                </button>
-              </div>
-            </form>
+                {/* Image URL */}
+                <div className="mb-3">
+                  <label htmlFor="image_url" className="form-label">
+                    Poster / Image URL
+                  </label>
+                  <input
+                    name="image_url"
+                    value={form.image_url}
+                    onChange={handleChange}
+                    type="text"
+                    className="form-control"
+                    id="image_url"
+                    placeholder="Paste image URL"
+                  />
+                  {errors.image_url && (
+                    <small className="text-danger">{errors.image_url}</small>
+                  )}
+                </div>
+
+                {/* Submit */}
+                <div className="text-center">
+                  <button type="reset" className="btn btn_clear px-4 py-2">
+                    Clear
+                  </button>
+                  <button type="submit" className="btn px-4 btn_save py-2 ms-3">
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </section>
           </div>
         </>
       ) : (

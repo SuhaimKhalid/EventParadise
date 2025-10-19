@@ -10,50 +10,47 @@ import "../../Stlying/Login&register.css";
 import { Container } from "react-bootstrap";
 import { SpinnerSection } from "../../Utilities/SpinnerSection";
 import { AppContext } from "../../Utilities/AppContext";
-import "../../Stlying/Login&register.css";
 import type { AxiosError } from "axios";
+
 export const Register_Staff_Page = () => {
   const navigate = useNavigate();
   const { setUserAccess, setSelectedUser, setToken } = useContext(AppContext);
-  // form state
+
+  // form states
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState<"staff" | "member" | "">("");
+  const [isSubmitting, setIsSubmitting] = useState(false); // 🔥 new loading state for button
 
-  // field-specific errors
   const [errors, setErrors] = useState<RegisterErrors>({});
   const [loadLogin, setLoadLogin] = useState<boolean>(true);
+
   type RegisterErrors = {
     name?: string;
     email?: string;
     password?: string;
     role?: string;
   };
-  // function to get current ISO date for created_at
+
   const getCurrentDate = () => new Date().toISOString();
 
   const validateForm = (): RegisterErrors => {
     const newErrors: RegisterErrors = {};
-
     if (!name.trim()) newErrors.name = "Name is required.";
     if (!email.trim()) newErrors.email = "Email is required.";
     if (!password.trim()) newErrors.password = "Password is required.";
     if (!role.trim()) newErrors.role = "Role is required.";
-
     return newErrors;
   };
 
   const UserRegisterHandler = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const newErrors = validateForm();
     setErrors(newErrors);
 
-    // stop submission if any errors
     if (Object.keys(newErrors).length > 0) return;
 
-    // build final user object
     const userData = {
       name,
       email,
@@ -62,9 +59,10 @@ export const Register_Staff_Page = () => {
       created_at: getCurrentDate(),
     };
 
+    setIsSubmitting(true); // 🔥 start loading
+
     try {
       await postUserAsStaff(userData);
-      // For login too
       const { user, token } = await loginPostUser({ email, password });
 
       const userInfo = {
@@ -84,12 +82,14 @@ export const Register_Staff_Page = () => {
     } catch (error) {
       const err = error as AxiosError;
       if (err.response?.status === 409) {
-        alert("User already registered with that email!");
+        alert("⚠️ User already registered with that email!");
       } else {
-        alert("Something went wrong. Please try again.");
+        alert("❌ Something went wrong. Please try again.");
       }
-      console.log(err);
+      console.error(err);
       setErrors({ email: "Registration failed. Please try again." });
+    } finally {
+      setIsSubmitting(false); // 🔥 end loading
     }
   };
 
@@ -102,7 +102,7 @@ export const Register_Staff_Page = () => {
       }
     };
     loadEvent();
-  });
+  }, []);
 
   return (
     <Container>
@@ -112,10 +112,12 @@ export const Register_Staff_Page = () => {
         </section>
       ) : (
         <section className="signIN_Off">
+          {/* Left Side Slider */}
           <article className="event_slides col-lg-3 col-md-4 col-sm-12">
             <ArticleSlider />
           </article>
 
+          {/* Form Section */}
           <article className="event_form col-lg-7 col-md-6 col-sm-12">
             <h3>Register</h3>
             <p className="text-center">
@@ -138,6 +140,7 @@ export const Register_Staff_Page = () => {
                   <small className="text-danger">{errors.name}</small>
                 )}
               </div>
+
               {/* Email */}
               <div className="mb-3">
                 <label htmlFor="email" className="form-label">
@@ -154,6 +157,7 @@ export const Register_Staff_Page = () => {
                   <small className="text-danger">{errors.email}</small>
                 )}
               </div>
+
               {/* Password */}
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">
@@ -170,6 +174,7 @@ export const Register_Staff_Page = () => {
                   <small className="text-danger">{errors.password}</small>
                 )}
               </div>
+
               {/* Role */}
               <div className="mb-3">
                 <label className="form-label">Select Role</label>
@@ -189,6 +194,8 @@ export const Register_Staff_Page = () => {
                   <small className="text-danger">{errors.role}</small>
                 )}
               </div>
+
+              {/* Buttons */}
               <div className="btn_box">
                 <button
                   onClick={(e) => {
@@ -197,15 +204,25 @@ export const Register_Staff_Page = () => {
                   }}
                   className="btn RegisterStaff_btn"
                 >
-                  <span> Login</span>
+                  <span>Login</span>
                 </button>
-                <button type="submit" className="btn RegisterStaff_btn">
-                  <span> Register</span>
+
+                <button
+                  type="submit"
+                  className="btn RegisterStaff_btn"
+                  disabled={isSubmitting}
+                  style={{
+                    opacity: isSubmitting ? 0.6 : 1,
+                    cursor: isSubmitting ? "not-allowed" : "pointer",
+                  }}
+                >
+                  {isSubmitting ? "Registering..." : "Register"}
                 </button>
               </div>
             </form>
           </article>
 
+          {/* Info Side Bar */}
           <section className="col-lg-2 register_bar">
             {role === "staff" ? (
               <div className="Staff_bar">

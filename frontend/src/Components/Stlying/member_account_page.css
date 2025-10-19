@@ -1,0 +1,48 @@
+@import "../Stlying/colors.css";
+
+.member_page .btn_div {
+  display: flex;
+  justify-content: space-around;
+}
+.cssbuttons-io a {
+  text-decoration: none;
+  color: white;
+}
+.cssbuttons-io:hover a {
+  color: black;
+}
+.member_page {
+  margin: 20px 0px;
+}
+.member_page .member_col_div {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+  margin: 10px 0px;
+}
+.member_account_bar .viewPaymentBtn {
+  margin-top: 20px;
+}
+.member_account_bar .viewPaymentBtn button {
+  margin: 10px;
+}
+
+@media screen and (max-width: 767px) {
+  .member_page .member_col_div {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 508px) {
+  .member_account_bar .userInnerBar {
+    display: flex;
+    flex-wrap: wrap !important;
+  }
+  .member_account_bar .userInnerBar .userName_div {
+    margin: auto;
+  }
+  .member_account_bar .viewPaymentBtn {
+    margin: 20px 0px;
+  }
+  .member_account_bar .userInfo_div {
+    margin: auto;
+  }
+}

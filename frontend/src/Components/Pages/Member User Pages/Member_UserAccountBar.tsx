@@ -65,7 +65,7 @@ export const Member_UserAccountBar: React.FC<Props> = ({
   };
   return (
     <>
-      <section className="userAccountBar">
+      <section className="userAccountBar member_account_bar">
         <div className="userAccountBarBlock">
           <Container>
             <div className="userInner">
@@ -82,6 +82,7 @@ export const Member_UserAccountBar: React.FC<Props> = ({
                         {new Date(selectedUser.created_at).toLocaleDateString(
                           "en-GB",
                           {
+                            day: "numeric",
                             month: "long",
                             year: "numeric",
                           }
@@ -95,7 +96,7 @@ export const Member_UserAccountBar: React.FC<Props> = ({
                     </div>
                     <p>Number of Events Joined</p>
                   </div>
-                  <div>
+                  <div className="viewPaymentBtn">
                     <Button
                       className="cssbuttons-io"
                       onClick={() => {
@@ -106,7 +107,13 @@ export const Member_UserAccountBar: React.FC<Props> = ({
                         }
                       }}
                     >
-                      View Payments
+                      <span> View Payments</span>
+                    </Button>
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => window.open("/member_account", "_self")}
+                    >
+                      <span>Events List</span>
                     </Button>
                   </div>
                 </div>

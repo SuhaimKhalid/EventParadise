@@ -1,20 +1,22 @@
 import { Button, Container } from "react-bootstrap";
-import { AppContext } from "../Utilities/AppContext";
+import { AppContext } from "../../Utilities/AppContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+
+interface Event {
+  title: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  location: string;
+  type: "free" | "paid";
+  price: number;
+  creator_id: number;
+  image_url?: string;
+  created_at: string;
+}
+
 export const UserAccountBar = () => {
-  interface Event {
-    title: string;
-    description: string;
-    start_date: string;
-    end_date: string;
-    location: string;
-    type: "free" | "paid";
-    price: number;
-    creator_id: number;
-    image_url?: string;
-    created_at: string;
-  }
   const { selectedUser, token } = useContext(AppContext);
   const [allEvents, setAllEvents] = useState<Event[]>([]);
 
@@ -36,9 +38,11 @@ export const UserAccountBar = () => {
     LoadEvents();
   }, [selectedUser, token]);
 
+  // For View Payments
+
   return (
     <>
-      <section className="userAccountBar">
+      <section className="userAccountBar staff_user">
         <div className="userAccountBarBlock">
           <Container>
             <div className="userInner">
@@ -55,6 +59,7 @@ export const UserAccountBar = () => {
                         {new Date(selectedUser.created_at).toLocaleDateString(
                           "en-GB",
                           {
+                            day: "numeric",
                             month: "long",
                             year: "numeric",
                           }
@@ -68,22 +73,23 @@ export const UserAccountBar = () => {
                     </div>
                     <p>Number of Events Created</p>
                   </div>
-                  <div>
+                  <div className="viewStaffBtns">
                     <Button
                       className="cssbuttons-io"
                       onClick={() => {
                         window.open("/add-event", "_self");
                       }}
                     >
-                      Add Event
+                      <span> Add Event</span>
                     </Button>
+
                     <Button
                       className="cssbuttons-io"
                       onClick={() => {
                         window.open("/staff_account", "_self");
                       }}
                     >
-                      Main
+                      <span> Main</span>
                     </Button>
                   </div>
                 </div>

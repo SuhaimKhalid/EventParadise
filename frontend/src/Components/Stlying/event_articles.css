@@ -1,0 +1,74 @@
+@import "../Stlying/colors.css";
+/* Event Page section Start */
+.Event_page {
+}
+.Event_page .main_poster_image {
+  width: 100%;
+}
+.Event_page .event_page_tite {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 20px 0px;
+}
+.Event_page .events_article {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+.Event_page .event_box {
+  background-color: var(--dark-color);
+  border-radius: 20px;
+  color: white;
+  margin: 10px 0px;
+  transition: all 0.3s ease-in-out 0s;
+}
+.Event_page .event_box:hover {
+  transition: all 0.3s ease-in-out 0s;
+  background-color: var(--Primary-color);
+  border-radius: 20px;
+  color: black;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.Event_page .event_box:hover h4 {
+  color: white;
+}
+.Event_page .event_box img {
+  width: 100%;
+}
+.Event_page .event_info_box {
+  margin-top: 10px;
+  padding: 20px;
+  text-align: center;
+}
+.Event_page .event_info_box h4 {
+  text-align: center;
+  color: var(--Primary-color);
+  font-size: 1.7rem;
+}
+.Event_page .view_event_btn {
+  border: 2px solid var(--Primary-color);
+  background-color: transparent;
+  font-size: 1rem;
+}
+.Event_page .event_box:hover .view_event_btn {
+  border: 2px solid var(--dark-color);
+  background-color: transparent;
+  font-size: 1rem;
+  color: var(--dark-color);
+}
+.Event_page .event_box:hover .view_event_btn:hover {
+  border: 2px solid var(--light-dark-color);
+  color: var(--Primary-color);
+
+  font-weight: 600;
+  background-color: var(--dark-color) !important;
+}
+
+/* Event Page section End */
+
+@media screen and (max-width: 767px) {
+  .events_article .event_box {
+    width: 100% !important;
+  }
+}

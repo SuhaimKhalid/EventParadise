@@ -1,4 +1,27 @@
 .view_attendees_section {
   display: flex;
   flex-wrap: wrap;
+  margin: 20px 0px;
+}
+.attendeesBtn {
+  display: flex;
+  justify-content: space-around;
+}
+.view_attendees_section .card {
+  margin: 0px 0px 10px 0px;
+}
+.attendeesBtn button {
+}
+
+@media screen and (max-width: 992px) {
+  .view_attendees_section div {
+  }
+  .view_attendees_section .card {
+    width: 90% !important;
+  }
+}
+@media screen and (max-width: 767px) {
+  .view_attendees_section .card {
+    width: 100% !important;
+  }
 }

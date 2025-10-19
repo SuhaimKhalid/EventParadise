@@ -7,7 +7,7 @@
   --Navbar_tab_color: #00ebff;
 }
 .userAccountBar {
-  margin-top: 60px;
+  margin-top: 55px;
   position: relative;
   width: 100%;
 }
@@ -84,4 +84,26 @@
   margin-top: 20px;
   font-size: 1.2rem;
   margin-left: 10px;
+}
+.viewStaffBtns {
+  margin: 20px 0px;
+}
+.viewStaffBtns button {
+  margin: 5px;
+}
+@media screen and (max-width: 500px) {
+  .staff_user .userInnerBar {
+    flex-wrap: wrap;
+  }
+  .staff_user .userInnerBar .userName_div {
+    margin: auto;
+  }
+  .staff_user .userInnerBar .userInfo_div {
+    margin: auto;
+  }
+  .viewStaffBtns {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }

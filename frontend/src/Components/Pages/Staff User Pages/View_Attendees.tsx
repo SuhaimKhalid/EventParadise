@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { UserAccountBar } from "../../Utilities/UserAccountBar";
+import { UserAccountBar } from "./UserAccountBar";
 import { AppContext } from "../../Utilities/AppContext";
 import axios from "axios";
 import { SpinnerSection } from "../../Utilities/SpinnerSection";
 import { fetchSingleEvent } from "../../Api's/api";
 import { useParams } from "react-router-dom";
-import { Button, Card, Col, Table } from "react-bootstrap";
+import { Button, Card, Col, Container, Table } from "react-bootstrap";
 export const View_Attendees = () => {
   const { event_id } = useParams<{ event_id: string }>();
   const { token } = useContext(AppContext);
@@ -67,84 +67,98 @@ export const View_Attendees = () => {
   return (
     <>
       <UserAccountBar />
-      {loading ? (
-        <SpinnerSection />
-      ) : viewEvent ? (
-        <section className="view_attendees_section">
-          <Col lg={4} md={6} sm={12}>
-            <Card style={{ width: "18rem" }}>
-              <Card.Img variant="top" src={viewEvent.image_url} />
-              <Card.Body>
-                <Card.Title>{viewEvent.title}</Card.Title>
-                <Card.Text>Location: {viewEvent.location}</Card.Text>
-                <Card.Text>
-                  Type: {viewEvent.type.toLocaleUpperCase()}
-                </Card.Text>
-                <Card.Text>
-                  Start Date:{" "}
-                  {new Date(viewEvent.start_date).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Card.Text>
-                <Card.Text>
-                  End Date:{" "}
-                  {new Date(viewEvent.end_date).toLocaleDateString("en-GB", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </Card.Text>
-
-                <Button
-                  className="cssbuttons-io"
-                  onClick={() => detailEventHandler(viewEvent.event_id)}
-                >
-                  <span>View Event</span>
-                </Button>
-
-                <Button
-                  className="cssbuttons-io"
-                  onClick={() => editEventHandler(viewEvent.event_id)}
-                >
-                  <span>Edit Event</span>
-                </Button>
-              </Card.Body>
-            </Card>
-          </Col>
-          <Col lg={8}>
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Role</th>
-                  <th>Joined At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {attendes.map((user) => (
-                  <tr key={user.user_id}>
-                    <td>{user.name}</td>
-                    <td>{user.email}</td>
-                    <td>{user.role}</td>
-                    <td>
-                      {new Date(user.joined_at).toLocaleDateString("en-GB", {
+      <Container>
+        {loading ? (
+          <div style={{ margin: "20px" }}>
+            {" "}
+            <SpinnerSection />
+          </div>
+        ) : viewEvent ? (
+          <section className="view_attendees_section">
+            <Col lg={4} md={4} sm={12}>
+              <Card style={{ width: "18rem" }}>
+                <Card.Img variant="top" src={viewEvent.image_url} />
+                <Card.Body>
+                  <Card.Title>{viewEvent.title}</Card.Title>
+                  <Card.Text>Location: {viewEvent.location}</Card.Text>
+                  <Card.Text>
+                    Type: {viewEvent.type.toLocaleUpperCase()}
+                  </Card.Text>
+                  <Card.Text>
+                    Start Date:{" "}
+                    {new Date(viewEvent.start_date).toLocaleDateString(
+                      "en-GB",
+                      {
                         day: "numeric",
                         month: "long",
                         year: "numeric",
-                      })}
-                    </td>
+                      }
+                    )}
+                  </Card.Text>
+                  <Card.Text>
+                    End Date:{" "}
+                    {new Date(viewEvent.end_date).toLocaleDateString("en-GB", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </Card.Text>
+
+                  <div className="attendeesBtn">
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => detailEventHandler(viewEvent.event_id)}
+                    >
+                      <span>View Event</span>
+                    </Button>
+
+                    <Button
+                      className="cssbuttons-io"
+                      onClick={() => editEventHandler(viewEvent.event_id)}
+                    >
+                      <span>Edit Event</span>
+                    </Button>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col lg={8} md={8} sm={12}>
+              <p>
+                Below is a list of all users who have registered to attend this
+                event.
+              </p>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Joined At</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
-          </Col>
-        </section>
-      ) : (
-        <SpinnerSection />
-      )}
+                </thead>
+                <tbody>
+                  {attendes.map((user) => (
+                    <tr key={user.user_id}>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td>{user.role}</td>
+                      <td>
+                        {new Date(user.joined_at).toLocaleDateString("en-GB", {
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        })}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Col>
+          </section>
+        ) : (
+          <SpinnerSection />
+        )}
+      </Container>
     </>
   );
 };

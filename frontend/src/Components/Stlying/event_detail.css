@@ -1,0 +1,111 @@
+/* Event Detail Page Start */
+.Event_details {
+  margin-top: 70px;
+}
+.Event_details h2 {
+  text-align: center;
+  margin-top: 90px !important;
+}
+.Event_details .event_detail_inner {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px 0px;
+}
+.Event_details .event_detail_info {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 20px;
+}
+.Event_details .event_info_box {
+  background-color: var(--dark-color);
+  color: white;
+  text-align: left;
+  padding: 10px;
+}
+.Event_details .event_detail_img_box {
+  padding: 0px 10px;
+}
+.Event_details .event_detail_img_box img {
+  width: 100%;
+}
+.Event_details .book_btn_div {
+  display: flex;
+  justify-content: end;
+  margin: 20px 0px;
+}
+
+.Event_details .bookbtn span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  color: white;
+}
+.Event_details .bookbtn:hover span {
+  color: black;
+  font-weight: 700;
+}
+.Event_details .bookbtn {
+  outline: none !important;
+  border: none !important;
+}
+.Event_details .bookbtn {
+  position: relative;
+  font-weight: 700;
+  font-size: 18px;
+  border-radius: 0.8em;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--work_area_color),
+    var(--Primary-color)
+  );
+
+  overflow: hidden;
+  color: white !important;
+  border: 2px solid var(--Primary-color);
+}
+
+.bookbtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: var(--dark-color);
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 1;
+}
+
+.bookbtn:hover::before {
+  transform: translate3d(100%, 0, 0);
+}
+
+.bookbtn:active {
+  transform: scale(0.95);
+}
+.bootbtn_div_login {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.bootbtn_div_login p {
+  margin-right: 20px;
+  color: red;
+}
+/* Event Detail Page End */
+
+@media screen and (max-width: 767px) {
+  .bookbtn {
+    width: 100%;
+  }
+  .Event_details .book_btn_div {
+    justify-content: center;
+    width: 100%;
+  }
+  .book_btn_div {
+    width: 100%;
+    margin: 10px 0px;
+    justify-content: center;
+  }
+}

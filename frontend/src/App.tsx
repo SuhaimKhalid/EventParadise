@@ -6,13 +6,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Routes, Route } from "react-router-dom";
 
 import { NavbarComponent } from "./Components/Utilities/NavbarComponent";
-import { Event_Page } from "./Components/Pages/Events_Page";
+import { Event_Page } from "./Components/Pages/Main Pages/Events_Page";
 import { Home_Page } from "./Components/Pages/Main Pages/Home_Page";
 import { Register_Staff_Page } from "./Components/Pages/Main Pages/Register_Staff_Page";
 import { Login_User_Page } from "./Components/Pages/Main Pages/Login_User_Page";
-import { Event_Detail_Page } from "./Components/Pages/Event_Detail_Page";
+import { Event_Detail_Page } from "./Components/Pages/Main Pages/Event_Detail_Page";
 import { Add_Event_Page } from "./Components/Pages/Staff User Pages/Add_Event_Page";
-import { Staff_Account_Page } from "./Components/Pages/Staff_Account_Page";
+import { Staff_Account_Page } from "./Components/Pages/Staff User Pages/Staff_Account_Page";
 import { AppProvider } from "./Components/Utilities/AppProvider";
 import { Edit_Event_Page } from "./Components/Pages/Staff User Pages/Edit_Event_Page";
 import { Member_Account_Page } from "./Components/Pages/Member User Pages/Member_Account_Page";
