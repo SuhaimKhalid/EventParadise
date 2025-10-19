@@ -216,7 +216,7 @@ export const Register_Staff_Page = () => {
                     cursor: isSubmitting ? "not-allowed" : "pointer",
                   }}
                 >
-                  {isSubmitting ? "Registering..." : "Register"}
+                  <span> {isSubmitting ? "Registering..." : "Register"}</span>
                 </button>
               </div>
             </form>
