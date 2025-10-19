@@ -4,6 +4,8 @@ EventParadise is a modern, full-featured event management platform built as a Re
 
 **Backend Repository**: [EventParadise-Backend](https://github.com/SuhaimKhalid/EventParadise-Backend)
 
+**Live Site**: [EventParadise Live](https://eventparadise.netlify.app/)
+
 ## 🚀 Features
 
 ### Core Functionality
