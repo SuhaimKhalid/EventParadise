@@ -8,6 +8,7 @@ import { NavLink } from "react-router-dom";
 import { AppContext } from "./AppContext";
 import userIcon from "../../assets/Images/Icons/user.png";
 import { Dropdown } from "react-bootstrap";
+
 export const NavbarComponent = () => {
   const { userAccess, setUserAccess, selectedUser } = useContext(AppContext);
   function logOutHandler() {
@@ -19,7 +20,7 @@ export const NavbarComponent = () => {
     <header>
       <Navbar expand="lg" className="fixed-top">
         <Container>
-          <Navbar.Brand href="/">EventParadise</Navbar.Brand>
+          <Navbar.Brand href="/">Event Paradise</Navbar.Brand>
 
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" role="navigation">
